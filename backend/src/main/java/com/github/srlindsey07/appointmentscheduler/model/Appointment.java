@@ -1,11 +1,12 @@
 package com.github.srlindsey07.appointmentscheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Document(collection = "appointments")
 public class Appointment {
@@ -13,15 +14,18 @@ public class Appointment {
     @Id
     private String id;
 
-    @DBRef
-    @Field(name = "patient_id")
-    private Patient patientId;
+    @Field(targetType = FieldType.OBJECT_ID)
+    private String patientId;
 
-    @Field(name = "provider_id")
-    private User providerId;
+    @Field(targetType = FieldType.OBJECT_ID)
+    private String providerId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime start;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime end;
 
     private AppointmentStatusEnum status;
@@ -29,10 +33,10 @@ public class Appointment {
     private AppointmentTypeEnum type;
 
     public Appointment() {
+
     }
 
-    public Appointment(String id, Patient patientId, User providerId, LocalDateTime start, LocalDateTime end, AppointmentStatusEnum status, AppointmentTypeEnum type) {
-        this.id = id;
+    public Appointment(String patientId, String providerId, LocalDateTime start, LocalDateTime end, AppointmentStatusEnum status, AppointmentTypeEnum type) {
         this.patientId = patientId;
         this.providerId = providerId;
         this.start = start;
@@ -49,19 +53,19 @@ public class Appointment {
         this.id = id;
     }
 
-    public Patient getPatientId() {
+    public String getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(Patient patientId) {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
-    public User getProviderId() {
+    public String getProviderId() {
         return providerId;
     }
 
-    public void setProviderId(User providerId) {
+    public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
 
@@ -95,5 +99,18 @@ public class Appointment {
 
     public void setType(AppointmentTypeEnum type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id='" + id + '\'' +
+                ", patientId='" + patientId + '\'' +
+                ", providerId='" + providerId + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", status=" + status +
+                ", type=" + type +
+                '}';
     }
 }

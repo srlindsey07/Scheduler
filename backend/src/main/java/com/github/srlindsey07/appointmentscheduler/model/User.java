@@ -2,27 +2,30 @@ package com.github.srlindsey07.appointmentscheduler.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document(collection = "users")
 public class User {
 
-    @Id
+    @MongoId(FieldType.OBJECT_ID)
     private String id;
 
-    private String username;
+    private Name name;
 
-    private String password;
+    private UserRole role;
 
-    // create name class
-    private Object name;
+    private ContactInfo contact;
 
-    // create enum
-    private String role;
+    public User() {
+    }
 
-    // create contactInfo class
-    private Object contact;
-
-
+    public User(String id, Name name, UserRole role, ContactInfo contact) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.contact = contact;
+    }
 
     public String getId() {
         return id;
@@ -32,43 +35,27 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Object getName() {
+    public Name getName() {
         return name;
     }
 
-    public void setName(Object name) {
+    public void setName(Name name) {
         this.name = name;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
-    public Object getContact() {
+    public ContactInfo getContact() {
         return contact;
     }
 
-    public void setContact(Object contactInfo) {
+    public void setContact(ContactInfo contactInfo) {
         this.contact = contactInfo;
     }
 }
