@@ -11,10 +11,11 @@ This is a sample project that demonstrates my knowledge of various skills such a
 * JUnit v5
 
 ## How to Run
-* Clone this repository
-* Start up your local MongoDB server on default port 27017
-* Build the project
-* Once built successfully, run the main method
+* Clone this repository.
+* Start up your local MongoDB server on default port 27017.
+  * Alternatively, replace the value for `spring.data.mongodb.uri` in application.properties with your own URI to a MongoDB instance.
+* Build the project.
+* Once built successfully, run `./mvnw spring-boot:run`.
 
 ## API Endpoints
 ```

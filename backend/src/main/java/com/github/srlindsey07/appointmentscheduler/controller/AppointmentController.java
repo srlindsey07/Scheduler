@@ -4,6 +4,7 @@ import com.github.srlindsey07.appointmentscheduler.model.Appointment;
 import com.github.srlindsey07.appointmentscheduler.service.AppointmentService;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ public class AppointmentController {
 
     @Autowired
     AppointmentService appointmentService;
-
 
     /**
      * Get appointments by ID.

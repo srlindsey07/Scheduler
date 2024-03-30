@@ -1,95 +1,59 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import { useEffect, useState } from 'react'
+import { findAppointments } from './services/appointments.service';
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/sass/styles.scss';
+import { Appointment, CalendarAppointment } from './models/appointment-models';
+import { appointmentToCalendar } from './utils/appointment-to-calendar';
+
+// TODO: Get providers from API
+const providers = [
+  { providerId: '65ff4be0fc13ae7d2050fa9d', resourceTitle: 'Dr. Williams' },
+  { providerId: '65ff4be0fc13ae7d2050faa2', resourceTitle: 'Dr. Smith' },
+  { providerId: '65ff4be0fc13ae7d2050faa0', resourceTitle: 'Dr. Jones' },
+  { providerId: '65ff4be0fc13ae7d2050fa9e', resourceTitle: 'Dr. Wilson' },
+  { providerId: '65ff4be0fc13ae7d2050faa1', resourceTitle: 'Dr. Garcia'}
+]
 
 export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    const [appointments, setAppointments] = useState<CalendarAppointment[]>([]);
+    const [date, setDate] = useState(new Date());
+    const localizer = momentLocalizer(moment);
+
+    useEffect(() => {
+        async function fetchAppointments() {
+            const today = new Date();
+            let res: Appointment[] = await findAppointments('2024-03-01T00:00:00', '2024-03-31T00:00:00');
+        
+            const _appointments: CalendarAppointment[] = res.map((appointment: Appointment) => {
+                return appointmentToCalendar(appointment);
+            })
+
+            setAppointments(_appointments);            
+        }
+        fetchAppointments(); 
+    }, []);
+
+    if (appointments.length === 0) return <div>Loading...</div>
+
+    return (
+        <main>
+            {/* TODO: Move to a different component*/}
+            {/* TODO: Add styling */}
+            <Calendar 
+                localizer={localizer} 
+                step={15}
+                timeslots={4}
+                defaultView={Views.DAY}
+                defaultDate={new Date(2024, 2, 10)} // TODO: change to today
+                min={new Date(2024, 0, 0, 6, 0, 0)}
+                max={new Date(2024, 0, 0, 19, 0, 1)}
+                events={appointments}
+                resources={providers}
+                resourceIdAccessor="providerId"
+                resourceTitleAccessor="resourceTitle"
             />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+        </main>
+    )
 }
