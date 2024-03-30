@@ -1,17 +1,19 @@
-import { Appointment, CalendarAppointment } from "../models/appointment-models";
+import { Appointment, CalendarAppointment } from '../models/appointment-models'
 
 /**
- * Convert an existing appointment to a format to be consumed by  
+ * Convert an existing appointment to a format to be consumed by
  * React Big Calendar component.
- * 
- * @param appointment 
+ *
+ * @param appointment
  * @returns appointment to be consumed by RBC
  */
-export function appointmentToCalendar(appointment: Appointment): CalendarAppointment {
+export function appointmentToCalendar(
+    appointment: Appointment,
+): CalendarAppointment {
     if (!appointment.id) {
-        throw new TypeError('Appointment has no ID');
+        throw new TypeError('Appointment has no ID')
     }
-    
+
     return new CalendarAppointment(
         appointment.id,
         appointment.patientId,
@@ -20,6 +22,6 @@ export function appointmentToCalendar(appointment: Appointment): CalendarAppoint
         new Date(appointment.end),
         appointment.status,
         appointment.type,
-        appointment.allDay !== undefined ? appointment.allDay : false
+        appointment.allDay !== undefined ? appointment.allDay : false,
     )
 }
