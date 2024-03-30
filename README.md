@@ -9,10 +9,14 @@ GOAL: An application that manages appointments, patients, providers and users fo
 * Create new appointments.
 * Update existing appointments.
 
+### Frontend
+* Fetch appointments by date range (currently defaulted).
+* Display appointments in day view calendar.
+
 ## Backlog Items
 * Create frontend application.
   * Appointments
-    * Calendar to display all appointments for facility within a calendar month.
+    * Calendar to display all appointments for facility within a calendar month (in progress).
     * View appointment details.
     * Update appointment details.
     * Create new appointment.
