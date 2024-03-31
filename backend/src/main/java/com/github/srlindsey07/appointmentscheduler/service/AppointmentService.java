@@ -3,17 +3,15 @@ package com.github.srlindsey07.appointmentscheduler.service;
 import com.github.srlindsey07.appointmentscheduler.model.Appointment;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +21,7 @@ public class AppointmentService {
     @Autowired
     MongoOperations mongoTemplate;
 
-    static <T> T getParam(Map<String, String> map, String key) {
+    private static <T> T getParam(Map<String, String> map, String key) {
         return (map.containsKey(key)) ? (T) map.get(key) : null;
     }
 
@@ -32,11 +30,16 @@ public class AppointmentService {
         return appointment;
     }
 
-    public List<Appointment> search(LocalDateTime startDate, LocalDateTime endDate, Map<String, String> parameters) {
+    public List<Appointment> search(ZonedDateTime startDate, ZonedDateTime endDate, Map<String, String> parameters) {
         String providerId = getParam(parameters, "providerId");
         String patientId = getParam(parameters, "patientId");
 
-        Criteria criteria = Criteria.where("start").gte(startDate).lte(endDate);
+        // Change to UTC TZ, then convert to LocalDateTime
+        ZoneId zone = ZoneId.of("UTC");
+        LocalDateTime start = startDate.withZoneSameInstant(zone).toLocalDateTime();
+        LocalDateTime end = endDate.withZoneSameInstant(zone).toLocalDateTime();
+
+        Criteria criteria = Criteria.where("start").gte(start).lte(end);
 
         if (providerId != null) {
             criteria.and("providerId").is(providerId);
@@ -50,17 +53,17 @@ public class AppointmentService {
     }
 
     public String create(Appointment appointment) {
-        Appointment _appointment = mongoTemplate.insert(appointment, "appointments");
-        return _appointment.getId();
+        Appointment result = mongoTemplate.insert(appointment, "appointments");
+        return result.getId();
     }
 
     public UpdateResult update(Appointment appointment) {
         Query query = new Query(Criteria.where("id").is(appointment.getId()));
-        Update updateDefinition = new Update()
-                .set("patientId", appointment.getPatientId())
+        Update updateDefinition = new Update();
+        updateDefinition.set("patientId", appointment.getPatientId())
                 .set("providerId", appointment.getProviderId())
-                .set("start", appointment.getStart())
-                .set("end", appointment.getEnd())
+                .set("start", appointment.getStart().toString()) // convert dates to string so DB doesn't try to convert to UTC again
+                .set("end", appointment.getEnd().toString())
                 .set("status", appointment.getStatus())
                 .set("type", appointment.getType());
 

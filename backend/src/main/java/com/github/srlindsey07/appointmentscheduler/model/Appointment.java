@@ -1,12 +1,9 @@
 package com.github.srlindsey07.appointmentscheduler.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 
 @Document(collection = "appointments")
 public class Appointment {
@@ -20,13 +17,9 @@ public class Appointment {
     @Field(targetType = FieldType.OBJECT_ID)
     private String providerId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime start;
+    private ZonedDateTime start;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime end;
+    private ZonedDateTime end;
 
     private AppointmentStatusEnum status;
 
@@ -36,7 +29,7 @@ public class Appointment {
 
     }
 
-    public Appointment(String patientId, String providerId, LocalDateTime start, LocalDateTime end, AppointmentStatusEnum status, AppointmentTypeEnum type) {
+    public Appointment(String id, String patientId, String providerId, ZonedDateTime start, ZonedDateTime end, AppointmentStatusEnum status, AppointmentTypeEnum type) {
         this.patientId = patientId;
         this.providerId = providerId;
         this.start = start;
@@ -69,19 +62,19 @@ public class Appointment {
         this.providerId = providerId;
     }
 
-    public LocalDateTime getStart() {
+    public ZonedDateTime getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(ZonedDateTime start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public ZonedDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(ZonedDateTime end) {
         this.end = end;
     }
 

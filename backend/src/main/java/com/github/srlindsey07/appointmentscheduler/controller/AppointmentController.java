@@ -4,13 +4,11 @@ import com.github.srlindsey07.appointmentscheduler.model.Appointment;
 import com.github.srlindsey07.appointmentscheduler.service.AppointmentService;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +24,7 @@ public class AppointmentController {
      * Get appointments by ID.
      *
      * @param id  Appointment ID
-     * @return One appointment.
+     * @return One appointment. Appointment times are UTC.
      */
     @GetMapping(value = "/{id}",
             produces = {"application/json", "application/xml"})
@@ -47,17 +45,17 @@ public class AppointmentController {
     /**
      * Get appointments by date range, provider ID and patient ID.
      *
-     * @param startDate  Required. yyyy-MM-dd'T'HH:mm:ss format.
-     * @param endDate  Required. yyyy-MM-dd'T'HH:mm:ss format.
+     * @param startDate  Required. 2024-03-01T00:00:00-04:00 format.
+     * @param endDate  Required. 2024-03-01T00:00:00-04:00 format.
      * @param providerId
      * @param patientId
-     * @return List of appointments.
+     * @return List of appointments. Appointment times are UTC.
      */
     @GetMapping(value = "",
             produces = {"application/json", "application/xml"})
     public ResponseEntity<List<Appointment>> searchAppointments(
-            @RequestParam(value = "startDate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startDate,
-            @RequestParam(value = "endDate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime endDate,
+            @RequestParam(value = "startDate") ZonedDateTime startDate,
+            @RequestParam(value = "endDate") ZonedDateTime endDate,
             @RequestParam(value = "providerId", required = false) String providerId,
             @RequestParam(value = "patientId", required = false) String patientId) {
         try {
@@ -78,9 +76,9 @@ public class AppointmentController {
     }
 
     /**
-     * Create new appointment.
+     * Create new appointment. Dates in appointment with TZ info are automatically converted to UTC.
      *
-     * @param appointment  Required.
+     * @param appointment  Required. Appointment details. Expected date format: 2024-03-01T00:00:00-04:00.
      * @return The created appointment ID.
      */
     // TODO: Send back location header?
@@ -101,6 +99,13 @@ public class AppointmentController {
         }
     }
 
+    /**
+     * Updates an existing appointment. Dates in appointment with TZ info are automatically converted to UTC.
+     *
+     * @param id  ID of the appointment to update.
+     * @param appointment  New appointment details.
+     * @return null
+     */
     @PutMapping(value = "/{id}",
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
