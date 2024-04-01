@@ -1,7 +1,7 @@
 import { APPOINTMENTS_API } from '../lib/endpoints'
 
 // TODO: Determine return type
-export async function findAppointments(
+export async function fetchAppointments(
     startDate: any,
     endDate: any,
     providerId?: string,

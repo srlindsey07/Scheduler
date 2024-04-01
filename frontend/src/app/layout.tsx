@@ -1,12 +1,8 @@
-import { Box } from '@mui/material'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from '@mui/material/styles'
+// import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
 import type { Metadata } from 'next'
-import SideNav from './components/sidenav'
-import TopBar from './components/top-bar'
-import './globals.scss'
-import customTheme from './styles/theme'
+import AppBar from './components/app-bar/app-bar'
+import SideNav from './components/side-nav'
+import './globals.css'
 
 export const metadata: Metadata = {
     title: 'Appointment Scheduler',
@@ -20,23 +16,20 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body>
-                <AppRouterCacheProvider>
-                    <CssBaseline />
-                    <ThemeProvider theme={customTheme}>
-                        <Box sx={{ display: 'flex' }}>
-                            <TopBar />
+                <div className='flex'>
+                    <SideNav />
 
-                            <SideNav />
+                    <div className='w-full'>
+                        <AppBar>
+                            <h1>HEADER</h1>
+                        </AppBar>
 
-                            <Box
-                                component='main'
-                                sx={{ flexGrow: 1, p: 3 }}
-                            >
-                                {children}
-                            </Box>
-                        </Box>
-                    </ThemeProvider>
-                </AppRouterCacheProvider>
+                        {/* subtract height of app bar from main height */}
+                        <main className='h-[calc(100vh-3.5rem)] overflow-auto p'>
+                            {children}
+                        </main>
+                    </div>
+                </div>
             </body>
         </html>
     )
