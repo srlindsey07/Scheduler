@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    /* .calendar__day-view {
+        .calendar__resource-header {
+            grid
+        }
+    } */
+}
+
 /* // @import 'react-big-calendar/lib/sass/styles.scss';
 
 // .rbc-calendar {

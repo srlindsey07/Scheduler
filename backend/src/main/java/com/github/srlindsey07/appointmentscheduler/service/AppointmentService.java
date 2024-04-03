@@ -34,10 +34,18 @@ public class AppointmentService {
         String providerId = getParam(parameters, "providerId");
         String patientId = getParam(parameters, "patientId");
 
-        // Change to UTC TZ, then convert to LocalDateTime
-        ZoneId zone = ZoneId.of("UTC");
-        LocalDateTime start = startDate.withZoneSameInstant(zone).toLocalDateTime();
-        LocalDateTime end = endDate.withZoneSameInstant(zone).toLocalDateTime();
+        LocalDateTime start;
+        LocalDateTime end;
+
+        if (!startDate.getZone().toString().equals("Z")) {
+            // Change to UTC TZ, then convert to LocalDateTime
+            ZoneId zone = ZoneId.of("UTC");
+            start = startDate.withZoneSameInstant(zone).toLocalDateTime();
+            end = endDate.withZoneSameInstant(zone).toLocalDateTime();
+        } else {
+            start = startDate.toLocalDateTime();
+            end = endDate.toLocalDateTime();
+        }
 
         Criteria criteria = Criteria.where("start").gte(start).lte(end);
 

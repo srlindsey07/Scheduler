@@ -40,6 +40,29 @@ const secondary = {
 
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    safelist: [
+        {
+            pattern: /grid-cols-./,
+        },
+        {
+            pattern: /grid-rows-./,
+        },
+        {
+            pattern: /col-start-./,
+        },
+        {
+            pattern: /row-start-./,
+        },
+        {
+            pattern: /row-end-./,
+        },
+        {
+            pattern: /row-span-./,
+        },
+        {
+            pattern: /^row-span-(1[0-6]|[2-9])$/,
+        },
+    ],
     theme: {
         extend: {
             colors: {
@@ -48,7 +71,18 @@ export default {
             },
             spacing: {
                 DEFAULT: '1.25rem',
+                '12.5': '3.125rem',
+                '13': '3.25rem',
             },
+            // Extend the use of row-span-* from 12 to 288
+            gridRow: Object.fromEntries(
+                Array(288)
+                    .fill(null)
+                    .map((_, i) => {
+                        const span = i + 12 // 12 is currently the max that tailwind supports on row-span-*
+                        return [`span-${span}`, `span  ${span} / span ${span}`]
+                    }),
+            ),
         },
     },
     plugins: [],

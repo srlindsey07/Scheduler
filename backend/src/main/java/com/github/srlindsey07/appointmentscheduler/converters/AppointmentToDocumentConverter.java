@@ -7,6 +7,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
+
 @Component
 @WritingConverter
 public class AppointmentToDocumentConverter implements Converter<Appointment, Document> {
@@ -25,6 +27,7 @@ public class AppointmentToDocumentConverter implements Converter<Appointment, Do
         document.put("type", appointment.getType());
         document.put("start", appointment.getStart().toLocalDateTime());
         document.put("end", appointment.getEnd().toLocalDateTime());
+
         return document;
     }
 }

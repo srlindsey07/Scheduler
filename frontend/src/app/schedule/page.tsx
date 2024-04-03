@@ -1,13 +1,14 @@
 'use client'
 // import { Paper } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import {
 //     momentLocalizer,
 //     Navigate,
 //     NavigateAction,
 //     View,
 // } from 'react-big-calendar'
-import Calendar from '../components/calendar/calendar'
+import moment, { Moment } from 'moment'
+import Calendar from '../components/calendar/day-view/calendar'
 import { CalendarAppointment } from '../models/appointment-models'
 
 // TODO: Get providers from API
@@ -23,6 +24,11 @@ export default function Schedule() {
     const [appointments, setAppointments] = useState<CalendarAppointment[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [viewDate, setViewDate] = useState<Date>(new Date())
+
+    useEffect(() => {
+        console.log('Run')
+    }, [])
+
     // const localizer = momentLocalizer(moment)
     // const theme = useTheme()
 
@@ -32,7 +38,7 @@ export default function Schedule() {
 
     // async function getAppointments() {
     //     setIsLoading(true)
-    //     const today = moment()
+    const today: Moment = moment()
     //     const start = moment(today).hour(0).minute(0).second(0).millisecond(0)
     //     const end = moment(today)
     //         .date(today.date() + 1)
