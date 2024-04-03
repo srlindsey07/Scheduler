@@ -1,15 +1,11 @@
 'use client'
+import { Appointment } from '@/app/models/appointment-models'
+import { User } from '@/app/models/user-models'
 import moment, { Moment } from 'moment'
 
-const providers = [
-    { providerId: '65ff4be0fc13ae7d2050fa9d', name: 'Dr. Williams' },
-    { providerId: '65ff4be0fc13ae7d2050faa2', name: 'Dr. Smith' },
-    { providerId: '65ff4be0fc13ae7d2050faa0', name: 'Dr. Jones' },
-    { providerId: '65ff4be0fc13ae7d2050fa9e', name: 'Dr. Wilson' },
-    { providerId: '65ff4be0fc13ae7d2050faa1', name: 'Dr. Garcia' },
-]
-
 interface DayViewTimeSlotProps {
+    appointments: Appointment[]
+    providers: User[]
     selectedDate: Moment
     dayStart?: Moment
     dayEnd?: Moment
@@ -23,6 +19,8 @@ interface DayViewTimeSlotProps {
  */
 // TODO: Fix up styling, add click events to open appointment details
 export default function DayTimeSlots({
+    appointments,
+    providers,
     selectedDate,
     dayStart = moment(selectedDate).startOf('day'),
     dayEnd = moment(selectedDate).endOf('day'),
@@ -75,9 +73,9 @@ export default function DayTimeSlots({
                         providers.map((provider, i) => (
                             <div
                                 key={`provider-col-${i}`}
-                                className='border p-1'
+                                className='border p-1 text-center font-bold'
                             >
-                                {provider.name}
+                                {`${provider.name.first.charAt(0)}. ${provider.name.last}`}
                             </div>
                         ))}
                 </div>
@@ -112,7 +110,7 @@ export default function DayTimeSlots({
                     </div>
 
                     {/* provider column markers */}
-                    {/* <div
+                    <div
                         className={`grid ${gridColumns(providers.length)} col-start-1 row-start-1`}
                     >
                         {providers.length > 0 &&
@@ -122,10 +120,11 @@ export default function DayTimeSlots({
                                     className='border p-1'
                                 ></div>
                             ))}
-                    </div> */}
+                    </div>
 
                     {/* appointments */}
                     {/* one col per provider, 1 row per 5 min interval */}
+                    {/* TODO: wire up actual appointments */}
                     <ol
                         className={`grid appointment-grid col-start-1 row-start-1 ${gridColumns(providers.length)}`}
                         style={{

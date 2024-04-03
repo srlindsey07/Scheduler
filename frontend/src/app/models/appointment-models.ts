@@ -1,9 +1,11 @@
+import { Moment } from 'moment'
+
 export class Appointment {
     id?: string
     patientId: string
     providerId: string
-    start: Date
-    end: Date
+    start: Moment
+    end: Moment
     status: AppointmentStatus
     type: AppointmentType
     allDay?: boolean
@@ -11,8 +13,8 @@ export class Appointment {
     constructor(
         patientId: string,
         providerId: string,
-        start: Date,
-        end: Date,
+        start: Moment,
+        end: Moment,
         status: AppointmentStatus,
         type: AppointmentType,
     ) {
@@ -26,36 +28,36 @@ export class Appointment {
 }
 
 /* Class specifically for use in React Big Calendar component */
-export class CalendarAppointment {
-    id: string
-    patientId: string
-    resourceId: string // requires resourceId, not providerId
-    start: Date
-    end: Date
-    status: AppointmentStatus
-    type: AppointmentType
-    allDay: boolean
+// export class CalendarAppointment {
+//     id: string
+//     patientId: string
+//     resourceId: string // requires resourceId, not providerId
+//     start: Date
+//     end: Date
+//     status: AppointmentStatus
+//     type: AppointmentType
+//     allDay: boolean
 
-    constructor(
-        id: string,
-        patientId: string,
-        providerId: string,
-        start: Date,
-        end: Date,
-        status: AppointmentStatus,
-        type: AppointmentType,
-        allDay: boolean = false,
-    ) {
-        this.id = id
-        this.patientId = patientId
-        this.resourceId = providerId
-        this.start = start
-        this.end = end
-        this.status = status
-        this.type = type
-        this.allDay = allDay
-    }
-}
+//     constructor(
+//         id: string,
+//         patientId: string,
+//         providerId: string,
+//         start: Date,
+//         end: Date,
+//         status: AppointmentStatus,
+//         type: AppointmentType,
+//         allDay: boolean = false,
+//     ) {
+//         this.id = id
+//         this.patientId = patientId
+//         this.resourceId = providerId
+//         this.start = start
+//         this.end = end
+//         this.status = status
+//         this.type = type
+//         this.allDay = allDay
+//     }
+// }
 
 export enum AppointmentStatus {
     SCHEDULED,
