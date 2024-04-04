@@ -1,79 +1,134 @@
 'use client'
-import { Appointment } from '@/app/models/appointment-models'
-import { User } from '@/app/models/user-models'
+import {
+    CalendarDayViewTimeProps,
+    TimeFormat,
+} from '@/app/models/calendar-models'
 import moment, { Moment } from 'moment'
+import { useEffect, useRef, useState } from 'react'
+import Appointment from './appointment'
 
-interface DayViewTimeSlotProps {
-    appointments: Appointment[]
-    providers: User[]
-    selectedDate: Moment
-    dayStart?: Moment
-    dayEnd?: Moment
-}
-
-/**
- *
- * @param dayStart Optional. Defaults to beginning of today.
- * @param dayEnd   Optional. Defaults to end of today.
- * @returns
- */
-// TODO: Fix up styling, add click events to open appointment details
+// TODO: Add click events to open appointment details
 export default function DayTimeSlots({
     appointments,
     providers,
     selectedDate,
-    dayStart = moment(selectedDate).startOf('day'),
-    dayEnd = moment(selectedDate).endOf('day'),
-}: DayViewTimeSlotProps) {
+    workHoursStart,
+    workHoursEnd,
+}: CalendarDayViewTimeProps) {
+    const [currentTime, setCurrentTime] = useState(moment())
+    // set intervals for the full day
     const intervals30min: Moment[] = get30MinIntervals()
-    const num5MinIntervals: number = getNum5MinIntervals()
+    const num5MinIntervals: number = getNum5MinIntervals(
+        moment().startOf('day'),
+        moment().endOf('day'),
+    )
 
+    // update the current time every minute to keep the current time marker accurate
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(moment())
+        }, 60000)
+
+        // clear on unmount
+        return () => {
+            clearInterval(timer)
+        }
+    }, [])
+
+    // Creates an array containing the times of every 30 minutes between the start of the day and the end of the day
     function get30MinIntervals(): Moment[] {
-        let start = moment(dayStart)
+        let dayStart = moment(moment().startOf('day'))
         let int: Moment[] = []
 
-        while (start.isSameOrBefore(dayEnd)) {
-            int.push(moment(start))
-            start.add(30, 'minutes')
+        while (dayStart.isSameOrBefore(moment().endOf('day'))) {
+            int.push(moment(dayStart))
+            dayStart.add(30, 'minutes')
         }
         return int
     }
 
-    function getNum5MinIntervals(): number {
-        const diff = moment(dayEnd).diff(moment(dayStart), 'minutes')
+    // Calculates number of 5 minute intervals between 2 times
+    function getNum5MinIntervals(start: Moment, end: Moment): number {
+        const diff = moment(end).diff(moment(start), 'minutes')
         return Math.ceil(diff / 5)
     }
 
-    const gridColumns = (cols: number): string => {
+    // Get class to render proper number of columns
+    const gridColumnClass = (cols: number): string => {
         return `grid-cols-${cols}`
     }
 
-    function getIntervalTime(int: Moment): string {
-        let hour: number = int.hour()
+    // Get class to place item in proper provider column
+    function getProviderColumn(providerId: string): string {
+        const providerIndex = appointments.findIndex(
+            (appt) => appt.providerId === providerId,
+        )
 
-        if (int.hour() > 12) {
-            hour = hour - 12
-        } else if (int.hour() === 0) {
-            hour = 12
+        return `col-start-${providerIndex + 1}`
+    }
+
+    // Get class to place item at proper start time
+    function getStartRow(apptTime: Moment): string {
+        const midnight = moment(apptTime).startOf('day')
+        const intervals = getNum5MinIntervals(midnight, apptTime) + 2
+
+        return `row-start-${intervals}`
+    }
+
+    // Get class to have item span proper number of 5 minute intervals
+    function getApptLength(apptStart: Moment, apptEnd: Moment): string {
+        const intervals = getNum5MinIntervals(apptStart, apptEnd)
+
+        return `row-span-${intervals}`
+    }
+
+    // Determine if provided time is within provided working hours
+    function isDuringWorkHours(time: Moment): boolean {
+        if (
+            time.isSameOrAfter(workHoursStart, 'minute') &&
+            time.isBefore(workHoursEnd, 'minute')
+        ) {
+            return true
         }
 
-        return `${hour} ${int.hour() < 12 ? 'AM' : 'PM'}`
+        return false
+    }
+
+    const CurrentTimeMarker = () => {
+        const myRef = useRef<HTMLLIElement>(null)
+
+        useEffect(() => {
+            myRef.current &&
+                myRef.current.scrollIntoView({
+                    block: 'center',
+                })
+        }, [])
+
+        return (
+            <li
+                className={`bg-secondary-600 col-span-full ${getStartRow(currentTime)} h-[2px]`}
+                title={`Current time is ${currentTime.format(TimeFormat.DISPLAY)}`}
+                ref={myRef}
+            ></li>
+        )
     }
 
     return (
-        <div className='flex flex-col border-collapse'>
+        <div className='flex flex-col'>
             {/* STICKY_HEADER */}
-            <div className='flex'>
-                {/* EMPTY TIME GUTTER */}
-                <div className='w-12 shrink-0'></div>
+            <div className='flex sticky top-0 bg-white shadow'>
+                {/* Empty Time Area */}
+                <div className='w-12 shrink-0 '></div>
 
-                {/* PROVIDER_COLUMNS*/}
-                <div className={`grid ${gridColumns(providers.length)} grow`}>
+                {/* Provider Column Headers */}
+                <div
+                    className={`grid ${gridColumnClass(providers.length)} grow`}
+                >
                     {providers.length > 0 &&
                         providers.map((provider, i) => (
                             <div
                                 key={`provider-col-${i}`}
-                                className='border p-1 text-center font-bold'
+                                className='border-x p-1 text-center font-bold'
                             >
                                 {`${provider.name.first.charAt(0)}. ${provider.name.last}`}
                             </div>
@@ -83,35 +138,41 @@ export default function DayTimeSlots({
 
             {/* BODY */}
             <div className='flex'>
-                {/* EMPTY TIME GUTTER */}
+                {/* Empty Time Gutter */}
                 <div className='w-12 shrink-0'></div>
 
-                {/* TIME AREA */}
+                {/* Time Area */}
                 <div className={`grow grid grid-cols-1 grid-rows-1 h-[2500px]`}>
-                    {/* half hour row markers */}
+                    {/* grid to mark half hour intervals */}
                     <div
                         className='col-start-1 row-start-1 grid grid-cols-1 '
                         style={{
-                            gridTemplateRows: `repeat(${intervals30min.length}, minmax(0, 1fr))`,
+                            gridTemplateRows: `1.75rem repeat(${intervals30min.length}, minmax(0, 1fr))`,
                         }}
                     >
+                        {/* extra space between time grid and header */}
+                        <div className='h-[1.75rem] border-b p-1 bg-slate-100'></div>
+
+                        {/* intervals */}
                         {intervals30min.length > 0 &&
                             intervals30min.map((interval, i) => (
                                 <div
                                     key={`int-col-${i}`}
-                                    className='border-b p-1'
+                                    className={`border-b p-1 ${!isDuringWorkHours(interval) && 'bg-slate-100'}`}
                                 >
                                     <div className='w-10 text-xs font-bold text-right text-gray-500 -ml-12.5 -mt-3.5'>
                                         {interval.minute() === 0 &&
-                                            getIntervalTime(interval)}
+                                            interval.format(
+                                                TimeFormat.SHORT_DISPLAY,
+                                            )}
                                     </div>
                                 </div>
                             ))}
                     </div>
 
-                    {/* provider column markers */}
+                    {/* grid to mark provider columns */}
                     <div
-                        className={`grid ${gridColumns(providers.length)} col-start-1 row-start-1`}
+                        className={`grid ${gridColumnClass(providers.length)} col-start-1 row-start-1`}
                     >
                         {providers.length > 0 &&
                             providers.map((provider, i) => (
@@ -122,35 +183,27 @@ export default function DayTimeSlots({
                             ))}
                     </div>
 
-                    {/* appointments */}
-                    {/* one col per provider, 1 row per 5 min interval */}
-                    {/* TODO: wire up actual appointments */}
-                    <ol
-                        className={`grid appointment-grid col-start-1 row-start-1 ${gridColumns(providers.length)}`}
+                    {/* grid to display appointments and current time marker */}
+                    <ul
+                        className={`grid appointment-grid col-start-1 row-start-1 ${gridColumnClass(providers.length)}`}
                         style={{
-                            gridTemplateRows: `repeat(${num5MinIntervals}, minmax(0, 1fr))`,
+                            gridTemplateRows: `1.75rem repeat(${num5MinIntervals}, minmax(0, 1fr))`,
                         }}
                     >
-                        <li
-                            className={`bg-blue-100 col-start-3 row-start-[7] row-span-5 `}
-                        >
-                            APPOINTMENT 1
-                        </li>
+                        <CurrentTimeMarker />
 
-                        <li
-                            className={`bg-blue-100 col-start-4 row-start-[20] row-span-20 `}
-                        >
-                            APPOINTMENT 2
-                        </li>
-                    </ol>
+                        {appointments.length > 0 &&
+                            appointments.map((appt, i) => (
+                                <Appointment
+                                    key={`appt-${i}`}
+                                    startTime={appt.start}
+                                    title={appt.titleDisplay}
+                                    className={`${getProviderColumn(appt.providerId)} ${getStartRow(appt.start)} ${getApptLength(appt.start, appt.end)}`}
+                                />
+                            ))}
+                    </ul>
                 </div>
             </div>
         </div>
     )
 }
-
-// grid-template-columns 142.375px 142.375px 142.375px 142.391px 142.375px
-// grid-template-rows 10.4062px 10.4062p
-
-// grid-template-columns 142.375px 142.375px 142.375px 142.391px 142.375px
-// grid-template-rows 4.79688px 4.79688px 4.

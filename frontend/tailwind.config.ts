@@ -54,6 +54,9 @@ export default {
             pattern: /row-start-./,
         },
         {
+            pattern: /^row-start-(1[0-6]|[2-9])$/,
+        },
+        {
             pattern: /row-end-./,
         },
         {
@@ -61,6 +64,9 @@ export default {
         },
         {
             pattern: /^row-span-(1[0-6]|[2-9])$/,
+        },
+        {
+            pattern: /max-h-./,
         },
     ],
     theme: {
@@ -76,11 +82,19 @@ export default {
             },
             // Extend the use of row-span-* from 12 to 288
             gridRow: Object.fromEntries(
-                Array(288)
+                Array(276)
                     .fill(null)
                     .map((_, i) => {
                         const span = i + 12 // 12 is currently the max that tailwind supports on row-span-*
                         return [`span-${span}`, `span  ${span} / span ${span}`]
+                    }),
+            ),
+            gridRowStart: Object.fromEntries(
+                Array(276)
+                    .fill(null)
+                    .map((_, i) => {
+                        const row = i + 12 // 12 is currently the max that tailwind supports on row-span-*
+                        return [row.toString(), row.toString()]
                     }),
             ),
         },

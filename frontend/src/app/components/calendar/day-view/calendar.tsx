@@ -1,20 +1,14 @@
-import { Appointment } from '@/app/models/appointment-models'
-import { CalendarView } from '@/app/models/calendar-models'
-import { User } from '@/app/models/user-models'
-import moment, { Moment } from 'moment'
+import { CalendarProps, CalendarView } from '@/app/models/calendar-models'
+import moment from 'moment'
 import React, { useState } from 'react'
 import CalendarDayView from './calendar-day-view'
-
-interface CalendarProps {
-    appointments: Appointment[]
-    providers: User[]
-    selectedDate?: Moment
-}
 
 export default function Calendar({
     appointments,
     providers,
     selectedDate = moment(),
+    workHoursStart,
+    workHoursEnd,
 }: CalendarProps) {
     const [view, setView] = useState<CalendarView>(CalendarView.DAY)
 
@@ -26,8 +20,12 @@ export default function Calendar({
                         appointments={appointments}
                         providers={providers}
                         selectedDate={selectedDate}
+                        workHoursStart={workHoursStart}
+                        workHoursEnd={workHoursEnd}
                     />
                 )
+
+            // TODO: Add week and month views
 
             default:
                 return (
@@ -35,6 +33,8 @@ export default function Calendar({
                         appointments={appointments}
                         providers={providers}
                         selectedDate={selectedDate}
+                        workHoursStart={workHoursStart}
+                        workHoursEnd={workHoursEnd}
                     />
                 )
         }
@@ -46,13 +46,14 @@ export default function Calendar({
 
     return (
         <div className='flex flex-col'>
-            {/* HEADER */}
+            {/* CALENDAR HEADER */}
             <div className='text-center text-lg font-bold'>
                 {getFormattedSelectedDate()}
 
                 {/* TODO: add next/prev buttons */}
             </div>
 
+            {/* CALENDAR BODY */}
             {renderCalendarView()}
         </div>
     )

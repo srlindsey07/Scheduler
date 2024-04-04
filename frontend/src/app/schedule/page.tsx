@@ -48,14 +48,15 @@ const appointments: Appointment[] = [
         type: AppointmentType.FOLLOW_UP,
         status: AppointmentStatus.CONFIRMED,
         start: moment().set({
-            hour: 11,
-            minute: 45,
+            hour: 3,
+            minute: 0,
             second: 0,
             millisecond: 0,
         }),
-        end: moment().set({ hour: 12, minute: 15, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050faa2',
+        end: moment().set({ hour: 4, minute: 0, second: 0, millisecond: 0 }),
+        providerId: '65ff4be0fc13ae7d2050fa9d', // Williams
         patientId: '65ff4b94fc13ae7bd250faaa',
+        titleDisplay: 'JOH, N',
     },
     {
         id: '66005c73fc13ae7b3650fc47',
@@ -68,8 +69,9 @@ const appointments: Appointment[] = [
             millisecond: 0,
         }),
         end: moment().set({ hour: 8, minute: 45, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050faa2',
+        providerId: '65ff4be0fc13ae7d2050faa2', // Smith
         patientId: '65ff4b94fc13ae7bd250fa9c',
+        titleDisplay: 'AND, T',
     },
     {
         id: '66005c73fc13ae7b3650fc48',
@@ -82,8 +84,9 @@ const appointments: Appointment[] = [
             millisecond: 0,
         }),
         end: moment().set({ hour: 15, minute: 0, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050faa1',
+        providerId: '65ff4be0fc13ae7d2050faa0', // Jones
         patientId: '65ff4b94fc13ae7bd250faa1',
+        titleDisplay: 'NGU, X',
     },
     {
         id: '66005c73fc13ae7b3650fc49',
@@ -96,8 +99,9 @@ const appointments: Appointment[] = [
             millisecond: 0,
         }),
         end: moment().set({ hour: 16, minute: 45, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050fa9d',
+        providerId: '65ff4be0fc13ae7d2050fa9e', // Wilson
         patientId: '65ff4b94fc13ae7bd250faa0',
+        titleDisplay: 'MIL, D',
     },
 ]
 
@@ -115,6 +119,8 @@ export default function Schedule() {
             <Calendar
                 appointments={appointments}
                 providers={providers}
+                workHoursStart={moment().set({ hour: 8, minute: 0 })}
+                workHoursEnd={moment().set({ hour: 17, minute: 0 })}
             />
         </div>
     )

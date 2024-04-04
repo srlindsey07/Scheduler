@@ -8,7 +8,7 @@ export class Appointment {
     end: Moment
     status: AppointmentStatus
     type: AppointmentType
-    allDay?: boolean
+    titleDisplay: string // TODO: Add to API
 
     constructor(
         patientId: string,
@@ -17,6 +17,7 @@ export class Appointment {
         end: Moment,
         status: AppointmentStatus,
         type: AppointmentType,
+        titleDisplay: string,
     ) {
         this.patientId = patientId
         this.providerId = providerId
@@ -24,40 +25,15 @@ export class Appointment {
         this.end = end
         this.status = status
         this.type = type
+        this.titleDisplay = titleDisplay
     }
 }
 
-/* Class specifically for use in React Big Calendar component */
-// export class CalendarAppointment {
-//     id: string
-//     patientId: string
-//     resourceId: string // requires resourceId, not providerId
-//     start: Date
-//     end: Date
-//     status: AppointmentStatus
-//     type: AppointmentType
-//     allDay: boolean
-
-//     constructor(
-//         id: string,
-//         patientId: string,
-//         providerId: string,
-//         start: Date,
-//         end: Date,
-//         status: AppointmentStatus,
-//         type: AppointmentType,
-//         allDay: boolean = false,
-//     ) {
-//         this.id = id
-//         this.patientId = patientId
-//         this.resourceId = providerId
-//         this.start = start
-//         this.end = end
-//         this.status = status
-//         this.type = type
-//         this.allDay = allDay
-//     }
-// }
+export interface AppointmentProps {
+    startTime: Moment
+    title: string
+    className?: string
+}
 
 export enum AppointmentStatus {
     SCHEDULED,
