@@ -88,9 +88,7 @@ export default function DayTimeSlots({
 
     // Get class to place item in proper provider column
     function getProviderColumn(providerId: string): string {
-        const providerIndex = appointments.findIndex(
-            (appt) => appt.providerId === providerId,
-        )
+        const providerIndex = providers.findIndex((p) => p.id === providerId)
 
         return `col-start-${providerIndex + 1}`
     }
@@ -216,7 +214,7 @@ export default function DayTimeSlots({
 
                     {/* grid to display appointments and current time marker */}
                     <ul
-                        className={`grid appointment-grid col-start-1 row-start-1 ${gridColumnClass(providers.length)}`}
+                        className={`grid col-start-1 row-start-1 ${gridColumnClass(providers.length)}`}
                         style={{
                             gridTemplateRows: `1.75rem repeat(${num5MinIntervals}, minmax(0, 1fr))`,
                         }}
@@ -232,7 +230,7 @@ export default function DayTimeSlots({
                                     key={`appt-${i}`}
                                     startTime={appt.start}
                                     title={appt.titleDisplay}
-                                    type={appt.type}
+                                    status={appt.status}
                                     className={`${getProviderColumn(appt.providerId)} ${getStartRow(appt.start)} ${getApptLength(appt.start, appt.end)} ${getAppointmentTypeClass(appt.type)}`}
                                 />
                             ))}

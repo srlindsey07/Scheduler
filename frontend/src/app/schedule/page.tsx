@@ -1,129 +1,67 @@
 'use client'
 import moment from 'moment'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Calendar from '../components/calendar/day-view/calendar'
-import {
-    Appointment,
-    AppointmentStatus,
-    AppointmentType,
-} from '../models/appointment-models'
+import { Appointment } from '../models/appointment-models'
 import { User, UserRole } from '../models/user-models'
+import { fetchAppointments } from '../services/appointments.service'
 
 // TODO: Get providers from API
 const providers: User[] = [
     {
-        id: '65ff4be0fc13ae7d2050fa9d',
+        id: '65ff4be0fc13ae7d2050fa9e', //
         name: { first: 'Joseph', last: 'Williams' },
         role: UserRole.PROVIDER,
         contact: { email: '', mobile: '' },
     },
     {
-        id: '65ff4be0fc13ae7d2050faa2',
+        id: '65ff4be0fc13ae7d2050fa9d', //
         name: { first: 'Jessica', last: 'Smith' },
         role: UserRole.PROVIDER,
         contact: { email: '', mobile: '' },
     },
     {
-        id: '65ff4be0fc13ae7d2050faa0',
+        id: '65ff4be0fc13ae7d2050faa0', //
         name: { first: 'Amy', last: 'Jones' },
         role: UserRole.PROVIDER,
         contact: { email: '', mobile: '' },
     },
     {
-        id: '65ff4be0fc13ae7d2050fa9e',
+        id: '65ff4be0fc13ae7d2050faa2', //
         name: { first: 'Sean', last: 'Wilson' },
         role: UserRole.PROVIDER,
         contact: { email: '', mobile: '' },
     },
     {
-        id: '65ff4be0fc13ae7d2050faa1',
+        id: '65ff4be0fc13ae7d2050faa1', //
         name: { first: 'Miguel', last: 'Garcia' },
         role: UserRole.PROVIDER,
         contact: { email: '', mobile: '' },
     },
 ]
-const appointments: Appointment[] = [
-    {
-        id: '66005c73fc13ae7b3650fc46',
-        type: AppointmentType.FOLLOW_UP,
-        status: AppointmentStatus.CONFIRMED,
-        start: moment().set({
-            hour: 8,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-        }),
-        end: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050fa9d', // Williams
-        patientId: '65ff4b94fc13ae7bd250faaa',
-        titleDisplay: 'JOH, N',
-    },
-    {
-        id: '66005c73fc13ae7b3650fc47',
-        type: AppointmentType.URGENT,
-        status: AppointmentStatus.CONFIRMED,
-        start: moment().set({
-            hour: 10,
-            minute: 15,
-            second: 0,
-            millisecond: 0,
-        }),
-        end: moment().set({ hour: 11, minute: 0, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050faa2', // Smith
-        patientId: '65ff4b94fc13ae7bd250fa9c',
-        titleDisplay: 'AND, T',
-    },
-    {
-        id: '66005c73fc13ae7b3650fc48',
-        type: AppointmentType.ROUTINE,
-        status: AppointmentStatus.SCHEDULED,
-        start: moment().set({
-            hour: 14,
-            minute: 45,
-            second: 0,
-            millisecond: 0,
-        }),
-        end: moment().set({ hour: 15, minute: 0, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050faa0', // Jones
-        patientId: '65ff4b94fc13ae7bd250faa1',
-        titleDisplay: 'NGU, X',
-    },
-    {
-        id: '66005c73fc13ae7b3650fc49',
-        type: AppointmentType.NEW_PATIENT,
-        status: AppointmentStatus.CONFIRMED,
-        start: moment().set({
-            hour: 16,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-        }),
-        end: moment().set({ hour: 16, minute: 45, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050fa9e', // Wilson
-        patientId: '65ff4b94fc13ae7bd250faa0',
-        titleDisplay: 'MIL, D',
-    },
-    {
-        id: '65ff4be0fc13ae7d2050fa9d',
-        type: AppointmentType.OFFICE_VISIT,
-        status: AppointmentStatus.CONFIRMED,
-        start: moment().set({
-            hour: 14,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-        }),
-        end: moment().set({ hour: 14, minute: 30, second: 0, millisecond: 0 }),
-        providerId: '65ff4be0fc13ae7d2050faa1',
-        patientId: '65ff4b94fc13ae7bd250faa0',
-        titleDisplay: 'HOW, G',
-    },
-]
 
 export default function Schedule() {
-    // const [appointments, setAppointments] = useState<CalendarAppointment[]>([])
+    const [appointments, setAppointments] = useState<Appointment[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [viewDate, setViewDate] = useState<Date>(new Date())
+
+    useEffect(() => {
+        getAppointments()
+    }, [])
+
+    async function getAppointments() {
+        setIsLoading(true)
+
+        const start = moment().startOf('day')
+        const end = moment().endOf('day')
+
+        let response: Appointment[] = await fetchAppointments(
+            start.toISOString(),
+            end.toISOString(),
+        )
+        console.log(response)
+        setAppointments(response)
+        setIsLoading(false)
+    }
 
     if (isLoading) {
         return <div>Loading....</div>

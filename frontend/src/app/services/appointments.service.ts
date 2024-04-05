@@ -1,4 +1,6 @@
 import { APPOINTMENTS_API } from '../lib/endpoints'
+import { AppointmentResponse } from '../models/appointment-models'
+import { appointmentFormatter } from '../utils/appointment-ui'
 
 // TODO: Determine return type
 export async function fetchAppointments(
@@ -24,7 +26,15 @@ export async function fetchAppointments(
             `${APPOINTMENTS_API}?${params.toString()}`,
             { method: 'GET' },
         )
-        const data = await res.json()
+        const data = await res
+            .json()
+            .then((val) =>
+                val.map((a: AppointmentResponse) => appointmentFormatter(a)),
+            )
+            .catch((e) =>
+                console.error('Error converting response to JSON: ', e),
+            )
+
         return data
     } catch (err) {
         console.error(`Could not fetch appointments: ${err}`)

@@ -29,10 +29,21 @@ export class Appointment {
     }
 }
 
+export interface AppointmentResponse {
+    id: string
+    patientId: string
+    providerId: string
+    start: Date
+    end: Date
+    status: string
+    type: string
+    titleDisplay?: string
+}
+
 export interface AppointmentProps {
     startTime: Moment
     title: string
-    type: AppointmentType
+    status: AppointmentStatus
     className?: string
 }
 
