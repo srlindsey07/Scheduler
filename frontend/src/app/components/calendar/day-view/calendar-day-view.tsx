@@ -10,21 +10,20 @@ export default function CalendarDayView({
     workHoursStart = moment(selectedDate).startOf('day'),
     workHoursEnd = moment(selectedDate).endOf('day'),
 }: CalendarDayViewProps) {
-    const [mainHeight, setMainHeight] = useState<number>(0)
+    const [mainHeight, setMainHeight] = useState<string>('0')
 
     useEffect(() => {
         const height = document.getElementsByTagName('main')[0].offsetHeight
-        setMainHeight(height)
+        setMainHeight(`${height}px`)
     }, [])
-
-    function getCalendarHeightClass(): string {
-        return `max-h-[calc(${mainHeight}px-4.25rem)]`
-    }
 
     return (
         <div className='flex border'>
             {/* DAY VIEW TIMESLOTS */}
-            <div className={`grow ${getCalendarHeightClass()} overflow-auto`}>
+            <div
+                className={`grow overflow-auto`}
+                style={{ maxHeight: `calc(${mainHeight} - 4.35rem)` }}
+            >
                 <DayTimeSlots
                     appointments={appointments}
                     providers={providers}

@@ -16,11 +16,11 @@ export default function CurrentTimeMarker({
             console.log(moment())
         }, 60000)
 
-        if (!!myRef.current) {
-            myRef.current.scrollIntoView({
-                block: 'center',
-            })
-        }
+        // if (!!myRef.current) {
+        //     myRef.current.scrollIntoView({
+        //         block: 'center',
+        //     })
+        // }
 
         return () => {
             clearInterval(timer)

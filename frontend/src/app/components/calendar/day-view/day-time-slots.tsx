@@ -104,7 +104,7 @@ export default function DayTimeSlots({
     return (
         <div className='flex flex-col'>
             {/* STICKY_HEADER */}
-            <div className='flex sticky top-0 bg-white shadow'>
+            <div className='flex sticky top-0 z-10 bg-white shadow'>
                 {/* Empty Time Area */}
                 <div className='w-12 shrink-0 '></div>
 
