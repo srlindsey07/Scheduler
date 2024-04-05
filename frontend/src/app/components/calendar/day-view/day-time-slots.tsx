@@ -1,39 +1,11 @@
-'use client'
 import { AppointmentType } from '@/app/models/appointment-models'
 import {
     CalendarDayViewTimeProps,
     TimeFormat,
 } from '@/app/models/calendar-models'
 import moment, { Moment } from 'moment'
-import { useEffect, useRef, useState } from 'react'
 import Appointment from './appointment'
-
-const CurrentTimeMarker = ({
-    rowStartClass,
-    currentTime,
-}: {
-    rowStartClass: string
-    currentTime: Moment
-}) => {
-    const myRef = useRef<HTMLLIElement>(null)
-
-    // re-render from the setInterval makes the line jump back to center every minute
-    useEffect(() => {
-        if (myRef.current) {
-            myRef.current.scrollIntoView({
-                block: 'center',
-            })
-        }
-    }, [])
-
-    return (
-        <li
-            className={`bg-secondary-600 col-span-full ${rowStartClass} h-[2px]`}
-            title={`Current time is ${currentTime.format(TimeFormat.DISPLAY)}`}
-            ref={myRef}
-        ></li>
-    )
-}
+import CurrentTimeMarker from './current-time-marker'
 
 // TODO: Add click events to open appointment details
 export default function DayTimeSlots({
@@ -43,25 +15,12 @@ export default function DayTimeSlots({
     workHoursStart,
     workHoursEnd,
 }: CalendarDayViewTimeProps) {
-    const [currentTime, setCurrentTime] = useState(moment())
     // set intervals for the full day
     const intervals30min: Moment[] = get30MinIntervals()
     const num5MinIntervals: number = getNum5MinIntervals(
         moment().startOf('day'),
         moment().endOf('day'),
     )
-
-    // update the current time every minute to keep the current time marker accurate
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentTime(moment())
-        }, 60000)
-
-        // clear on unmount
-        return () => {
-            clearInterval(timer)
-        }
-    }, [])
 
     // Creates an array containing the times of every 30 minutes between the start of the day and the end of the day
     function get30MinIntervals(): Moment[] {
@@ -94,7 +53,7 @@ export default function DayTimeSlots({
     }
 
     // Get class to place item at proper start time
-    function getStartRow(apptTime: Moment): string {
+    const getStartRow = (apptTime: Moment): string => {
         const midnight = moment(apptTime).startOf('day')
         const intervals = getNum5MinIntervals(midnight, apptTime) + 2
 
@@ -180,14 +139,14 @@ export default function DayTimeSlots({
                         }}
                     >
                         {/* extra space between time grid and header */}
-                        <div className='h-[1.75rem] border-b p-1 bg-slate-100'></div>
+                        <div className='h-[1.75rem] border-b p-1 bg-slate-50'></div>
 
                         {/* intervals */}
                         {intervals30min.length > 0 &&
                             intervals30min.map((interval, i) => (
                                 <div
                                     key={`int-col-${i}`}
-                                    className={`border-b p-1 ${!isDuringWorkHours(interval) && 'bg-slate-100'}`}
+                                    className={`border-b p-1 ${!isDuringWorkHours(interval) && 'bg-slate-50'}`}
                                 >
                                     <div className='w-10 text-xs font-bold text-right text-gray-500 -ml-12.5 -mt-3.5'>
                                         {interval.minute() === 0 &&
@@ -219,10 +178,7 @@ export default function DayTimeSlots({
                             gridTemplateRows: `1.75rem repeat(${num5MinIntervals}, minmax(0, 1fr))`,
                         }}
                     >
-                        <CurrentTimeMarker
-                            rowStartClass={getStartRow(currentTime)}
-                            currentTime={currentTime}
-                        />
+                        <CurrentTimeMarker getRowStart={getStartRow} />
 
                         {appointments.length > 0 &&
                             appointments.map((appt, i) => (

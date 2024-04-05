@@ -61,7 +61,7 @@ export default function Appointment({
             <span>{`${startTime.format(TimeFormat.DISPLAY)} - ${title}`}</span>
             <FontAwesomeIcon
                 icon={getStatusIcon()}
-                aria-label={status.toString()}
+                title={AppointmentStatus[status]}
                 className={`bg-white rounded-full p-1.5 text-sm absolute -top-1.5 -right-0.5 shadow-sm ${getIconStyling()}`}
             />
         </li>

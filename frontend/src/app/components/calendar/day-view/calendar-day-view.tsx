@@ -22,7 +22,7 @@ export default function CalendarDayView({
     }
 
     return (
-        <div className='flex calendar__day-view border'>
+        <div className='flex border'>
             {/* DAY VIEW TIMESLOTS */}
             <div className={`grow ${getCalendarHeightClass()} overflow-auto`}>
                 <DayTimeSlots
