@@ -48,12 +48,12 @@ const appointments: Appointment[] = [
         type: AppointmentType.FOLLOW_UP,
         status: AppointmentStatus.CONFIRMED,
         start: moment().set({
-            hour: 3,
+            hour: 8,
             minute: 0,
             second: 0,
             millisecond: 0,
         }),
-        end: moment().set({ hour: 4, minute: 0, second: 0, millisecond: 0 }),
+        end: moment().set({ hour: 8, minute: 30, second: 0, millisecond: 0 }),
         providerId: '65ff4be0fc13ae7d2050fa9d', // Williams
         patientId: '65ff4b94fc13ae7bd250faaa',
         titleDisplay: 'JOH, N',
@@ -63,12 +63,12 @@ const appointments: Appointment[] = [
         type: AppointmentType.URGENT,
         status: AppointmentStatus.CONFIRMED,
         start: moment().set({
-            hour: 8,
-            minute: 0,
+            hour: 10,
+            minute: 15,
             second: 0,
             millisecond: 0,
         }),
-        end: moment().set({ hour: 8, minute: 45, second: 0, millisecond: 0 }),
+        end: moment().set({ hour: 11, minute: 0, second: 0, millisecond: 0 }),
         providerId: '65ff4be0fc13ae7d2050faa2', // Smith
         patientId: '65ff4b94fc13ae7bd250fa9c',
         titleDisplay: 'AND, T',
@@ -102,6 +102,21 @@ const appointments: Appointment[] = [
         providerId: '65ff4be0fc13ae7d2050fa9e', // Wilson
         patientId: '65ff4b94fc13ae7bd250faa0',
         titleDisplay: 'MIL, D',
+    },
+    {
+        id: '65ff4be0fc13ae7d2050fa9d',
+        type: AppointmentType.OFFICE_VISIT,
+        status: AppointmentStatus.CONFIRMED,
+        start: moment().set({
+            hour: 14,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+        }),
+        end: moment().set({ hour: 14, minute: 30, second: 0, millisecond: 0 }),
+        providerId: '65ff4be0fc13ae7d2050faa1',
+        patientId: '65ff4b94fc13ae7bd250faa0',
+        titleDisplay: 'HOW, G',
     },
 ]
 

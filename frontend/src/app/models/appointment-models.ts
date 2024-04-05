@@ -32,14 +32,15 @@ export class Appointment {
 export interface AppointmentProps {
     startTime: Moment
     title: string
+    type: AppointmentType
     className?: string
 }
 
 export enum AppointmentStatus {
-    SCHEDULED,
-    CONFIRMED,
-    CANCELED,
-    COMPLETE,
+    SCHEDULED, // calendar
+    CONFIRMED, // calendar-check
+    CANCELED, // calendar-xmark
+    COMPLETE, // circle-check
 }
 
 export enum AppointmentType {

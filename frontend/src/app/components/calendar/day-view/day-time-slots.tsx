@@ -1,4 +1,5 @@
 'use client'
+import { AppointmentType } from '@/app/models/appointment-models'
 import {
     CalendarDayViewTimeProps,
     TimeFormat,
@@ -6,6 +7,33 @@ import {
 import moment, { Moment } from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import Appointment from './appointment'
+
+const CurrentTimeMarker = ({
+    rowStartClass,
+    currentTime,
+}: {
+    rowStartClass: string
+    currentTime: Moment
+}) => {
+    const myRef = useRef<HTMLLIElement>(null)
+
+    // re-render from the setInterval makes the line jump back to center every minute
+    useEffect(() => {
+        if (myRef.current) {
+            myRef.current.scrollIntoView({
+                block: 'center',
+            })
+        }
+    }, [])
+
+    return (
+        <li
+            className={`bg-secondary-600 col-span-full ${rowStartClass} h-[2px]`}
+            title={`Current time is ${currentTime.format(TimeFormat.DISPLAY)}`}
+            ref={myRef}
+        ></li>
+    )
+}
 
 // TODO: Add click events to open appointment details
 export default function DayTimeSlots({
@@ -94,23 +122,26 @@ export default function DayTimeSlots({
         return false
     }
 
-    const CurrentTimeMarker = () => {
-        const myRef = useRef<HTMLLIElement>(null)
+    function getAppointmentTypeClass(type: AppointmentType): string {
+        switch (type) {
+            case AppointmentType.ROUTINE:
+                return 'bg-sky-100 text-sky-700 shadow-sm'
 
-        useEffect(() => {
-            myRef.current &&
-                myRef.current.scrollIntoView({
-                    block: 'center',
-                })
-        }, [])
+            case AppointmentType.URGENT:
+                return 'bg-orange-100 text-orange-700 shadow-sm'
 
-        return (
-            <li
-                className={`bg-secondary-600 col-span-full ${getStartRow(currentTime)} h-[2px]`}
-                title={`Current time is ${currentTime.format(TimeFormat.DISPLAY)}`}
-                ref={myRef}
-            ></li>
-        )
+            case AppointmentType.FOLLOW_UP:
+                return 'bg-lime-100 text-lime-700 shadow-sm'
+
+            case AppointmentType.NEW_PATIENT:
+                return 'bg-violet-100 text-violet-700 shadow-sm'
+
+            case AppointmentType.OFFICE_VISIT:
+                return 'bg-pink-100 text-pink-700 shadow-sm'
+
+            default:
+                return 'bg-sky-100 text-sky-700 shadow-sm'
+        }
     }
 
     return (
@@ -190,7 +221,10 @@ export default function DayTimeSlots({
                             gridTemplateRows: `1.75rem repeat(${num5MinIntervals}, minmax(0, 1fr))`,
                         }}
                     >
-                        <CurrentTimeMarker />
+                        <CurrentTimeMarker
+                            rowStartClass={getStartRow(currentTime)}
+                            currentTime={currentTime}
+                        />
 
                         {appointments.length > 0 &&
                             appointments.map((appt, i) => (
@@ -198,7 +232,8 @@ export default function DayTimeSlots({
                                     key={`appt-${i}`}
                                     startTime={appt.start}
                                     title={appt.titleDisplay}
-                                    className={`${getProviderColumn(appt.providerId)} ${getStartRow(appt.start)} ${getApptLength(appt.start, appt.end)}`}
+                                    type={appt.type}
+                                    className={`${getProviderColumn(appt.providerId)} ${getStartRow(appt.start)} ${getApptLength(appt.start, appt.end)} ${getAppointmentTypeClass(appt.type)}`}
                                 />
                             ))}
                     </ul>
