@@ -1,7 +1,10 @@
 package com.github.srlindsey07.appointmentscheduler.controller;
 
+import com.github.srlindsey07.appointmentscheduler.dto.AppointmentDTO;
 import com.github.srlindsey07.appointmentscheduler.model.Appointment;
+import com.github.srlindsey07.appointmentscheduler.model.Patient;
 import com.github.srlindsey07.appointmentscheduler.service.AppointmentService;
+import com.github.srlindsey07.appointmentscheduler.utils.AppointmentMapper;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +15,7 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -19,6 +23,12 @@ public class AppointmentController {
 
     @Autowired
     AppointmentService appointmentService;
+
+    private AppointmentMapper appointmentMapper;
+
+    public AppointmentController(AppointmentMapper appointmentMapper) {
+        this.appointmentMapper = appointmentMapper;
+    }
 
     /**
      * Get appointments by ID.
@@ -53,21 +63,22 @@ public class AppointmentController {
      */
     @GetMapping(value = "",
             produces = {"application/json", "application/xml"})
-    public ResponseEntity<List<Appointment>> searchAppointments(
+    public ResponseEntity<List<AppointmentDTO>> searchAppointments(
             @RequestParam(value = "startDate") ZonedDateTime startDate,
             @RequestParam(value = "endDate") ZonedDateTime endDate,
             @RequestParam(value = "providerId", required = false) String providerId,
             @RequestParam(value = "patientId", required = false) String patientId) {
         try {
-            Map<String, String> parameters = new HashMap<String, String>();
-            parameters.put("providerId", providerId);
-            parameters.put("patientId", patientId);
+            List<Appointment> result = appointmentService.search(startDate, endDate, providerId, patientId);
 
-            List<Appointment> appointments = appointmentService.search(startDate, endDate, parameters);
-
-            if (appointments.isEmpty()) {
+            if (result.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             }
+
+            List<AppointmentDTO> appointments = result
+                    .stream()
+                    .map(appointmentMapper::toDTO)
+                    .toList();
 
             return new ResponseEntity<>(appointments, HttpStatus.OK);
         } catch (Exception e) {

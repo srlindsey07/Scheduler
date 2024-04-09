@@ -1,9 +1,14 @@
 package com.github.srlindsey07.appointmentscheduler.service;
 
 import com.github.srlindsey07.appointmentscheduler.model.Appointment;
+import com.github.srlindsey07.appointmentscheduler.model.Patient;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -30,22 +35,11 @@ public class AppointmentService {
         return appointment;
     }
 
-    public List<Appointment> search(ZonedDateTime startDate, ZonedDateTime endDate, Map<String, String> parameters) {
-        String providerId = getParam(parameters, "providerId");
-        String patientId = getParam(parameters, "patientId");
-
-        LocalDateTime start;
-        LocalDateTime end;
-
-        if (!startDate.getZone().toString().equals("Z")) {
-            // Change to UTC TZ, then convert to LocalDateTime
-            ZoneId zone = ZoneId.of("UTC");
-            start = startDate.withZoneSameInstant(zone).toLocalDateTime();
-            end = endDate.withZoneSameInstant(zone).toLocalDateTime();
-        } else {
-            start = startDate.toLocalDateTime();
-            end = endDate.toLocalDateTime();
-        }
+    public List<Appointment> search(ZonedDateTime startDate, ZonedDateTime endDate, String providerId, String patientId) {
+        // Change to UTC TZ, then convert to LocalDateTime
+        ZoneId zone = ZoneId.of("UTC");
+        LocalDateTime start = startDate.withZoneSameInstant(zone).toLocalDateTime();
+        LocalDateTime end = endDate.withZoneSameInstant(zone).toLocalDateTime();
 
         Criteria criteria = Criteria.where("start").gte(start).lte(end);
 

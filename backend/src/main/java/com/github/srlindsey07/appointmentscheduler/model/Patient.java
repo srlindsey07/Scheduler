@@ -50,4 +50,13 @@ public class Patient {
     public void setContact(ContactInfo contact) {
         this.contact = contact;
     }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id='" + id + '\'' +
+                ", name=" + name +
+                ", contact=" + contact +
+                '}';
+    }
 }

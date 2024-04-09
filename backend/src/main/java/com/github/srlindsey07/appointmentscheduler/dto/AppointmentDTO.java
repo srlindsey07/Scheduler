@@ -1,22 +1,18 @@
-package com.github.srlindsey07.appointmentscheduler.model;
+package com.github.srlindsey07.appointmentscheduler.dto;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.*;
+import com.github.srlindsey07.appointmentscheduler.model.AppointmentStatus;
+import com.github.srlindsey07.appointmentscheduler.model.AppointmentType;
+import org.springframework.lang.Nullable;
 
 import java.time.ZonedDateTime;
 
-@Document(collection = "appointments")
-public class Appointment {
-
-    @Id
+public class AppointmentDTO {
     private String id;
 
-    @Field(name = "patientId", targetType = FieldType.OBJECT_ID)
-    @DocumentReference
-    private Patient patient;
+    private String patientId;
 
-    @Field(targetType = FieldType.OBJECT_ID)
+    private String patientShortName;
+
     private String providerId;
 
     private ZonedDateTime start;
@@ -27,12 +23,13 @@ public class Appointment {
 
     private AppointmentType type;
 
-    public Appointment() {
-
+    public AppointmentDTO() {
     }
 
-    public Appointment(Patient patient, String providerId, ZonedDateTime start, ZonedDateTime end, AppointmentStatus status, AppointmentType type) {
-        this.patient = patient;
+    public AppointmentDTO(String id, String patientId, String patientShortName, String providerId, ZonedDateTime start, ZonedDateTime end, AppointmentStatus status, AppointmentType type) {
+        this.id = id;
+        this.patientId = patientId;
+        this.patientShortName = patientShortName;
         this.providerId = providerId;
         this.start = start;
         this.end = end;
@@ -48,12 +45,20 @@ public class Appointment {
         this.id = id;
     }
 
-    public Patient getPatientId() {
-        return patient;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setPatientId(Patient patientId) {
-        this.patient = patientId;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getPatientShortName() {
+        return patientShortName;
+    }
+
+    public void setPatientShortName(String patientShortName) {
+        this.patientShortName = patientShortName;
     }
 
     public String getProviderId() {
@@ -98,9 +103,9 @@ public class Appointment {
 
     @Override
     public String toString() {
-        return "Appointment{" +
+        return "AppointmentDTO{" +
                 "id='" + id + '\'' +
-                ", patientId='" + patient + '\'' +
+                ", patientId='" + patientId + '\'' +
                 ", providerId='" + providerId + '\'' +
                 ", start=" + start +
                 ", end=" + end +

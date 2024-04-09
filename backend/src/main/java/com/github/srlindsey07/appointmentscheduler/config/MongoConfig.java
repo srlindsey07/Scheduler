@@ -1,7 +1,9 @@
 package com.github.srlindsey07.appointmentscheduler.config;
 
-import com.github.srlindsey07.appointmentscheduler.converters.AppointmentToDocumentConverter;
-import com.github.srlindsey07.appointmentscheduler.converters.DocumentToAppointmentConverter;
+//import com.github.srlindsey07.appointmentscheduler.converters.AppointmentToDocumentConverter;
+//import com.github.srlindsey07.appointmentscheduler.converters.DocumentToAppointmentConverter;
+import com.github.srlindsey07.appointmentscheduler.converters.ZonedDateTimeReadConverter;
+import com.github.srlindsey07.appointmentscheduler.converters.ZonedDateTimeWriteConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +26,8 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Bean
     public MongoCustomConversions customConversions() {
         return new MongoCustomConversions(asList(
-            new AppointmentToDocumentConverter(),
-            new DocumentToAppointmentConverter()
+                new ZonedDateTimeReadConverter(),
+                new ZonedDateTimeWriteConverter()
         ));
     }
 }

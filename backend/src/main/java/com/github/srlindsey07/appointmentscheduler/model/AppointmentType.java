@@ -1,6 +1,6 @@
 package com.github.srlindsey07.appointmentscheduler.model;
 
-public enum AppointmentTypeEnum {
+public enum AppointmentType {
     ROUTINE,
     URGENT,
     FOLLOW_UP,

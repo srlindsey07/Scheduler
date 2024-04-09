@@ -36,4 +36,16 @@ public class Name {
                 ", last='" + last + '\'' +
                 '}';
     }
+
+    public String getFullName() {
+        return this.getFirst() + " " + this.getLast();
+    }
+
+    public String getFullNameAlpha() {
+        return this.getLast() + ", " + this.getFirst();
+    }
+
+    public String getShortName() {
+        return this.getLast().substring(0, 3) + ", " + this.getFirst().charAt(0) + ".";
+    }
 }
