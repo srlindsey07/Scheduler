@@ -2,7 +2,6 @@ package com.github.srlindsey07.appointmentscheduler.dto;
 
 import com.github.srlindsey07.appointmentscheduler.model.AppointmentStatus;
 import com.github.srlindsey07.appointmentscheduler.model.AppointmentType;
-import org.springframework.lang.Nullable;
 
 import java.time.ZonedDateTime;
 

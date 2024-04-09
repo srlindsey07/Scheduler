@@ -1,7 +1,5 @@
 package com.github.srlindsey07.appointmentscheduler.config;
 
-//import com.github.srlindsey07.appointmentscheduler.converters.AppointmentToDocumentConverter;
-//import com.github.srlindsey07.appointmentscheduler.converters.DocumentToAppointmentConverter;
 import com.github.srlindsey07.appointmentscheduler.converters.ZonedDateTimeReadConverter;
 import com.github.srlindsey07.appointmentscheduler.converters.ZonedDateTimeWriteConverter;
 import org.springframework.beans.factory.annotation.Value;

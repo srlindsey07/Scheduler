@@ -2,7 +2,6 @@ package com.github.srlindsey07.appointmentscheduler.controller;
 
 import com.github.srlindsey07.appointmentscheduler.dto.AppointmentDTO;
 import com.github.srlindsey07.appointmentscheduler.model.Appointment;
-import com.github.srlindsey07.appointmentscheduler.model.Patient;
 import com.github.srlindsey07.appointmentscheduler.service.AppointmentService;
 import com.github.srlindsey07.appointmentscheduler.utils.AppointmentMapper;
 import com.mongodb.client.result.UpdateResult;
@@ -12,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/appointments")
