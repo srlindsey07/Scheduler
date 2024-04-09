@@ -11,7 +11,7 @@ public class AppointmentMapper {
     public AppointmentDTO toDTO(Appointment appointment) {
         String id = appointment.getId();
         String patientId = appointment.getPatientId().getId();
-        String patientShortName = appointment.getPatientId().getName().getShortName();
+        String patientShortName = appointment.getPatientId().getName().toShortName();
         String providerId = appointment.getProviderId();
         ZonedDateTime start = appointment.getStart();
         ZonedDateTime end = appointment.getEnd();

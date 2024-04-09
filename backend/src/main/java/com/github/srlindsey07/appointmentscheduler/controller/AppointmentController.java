@@ -97,7 +97,7 @@ public class AppointmentController {
             String newId = appointmentService.create(appointment);
 
             if (newId == null) {
-                return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
 
             return new ResponseEntity<>(newId, HttpStatus.CREATED);

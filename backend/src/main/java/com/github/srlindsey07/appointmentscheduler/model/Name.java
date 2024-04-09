@@ -37,15 +37,15 @@ public class Name {
                 '}';
     }
 
-    public String getFullName() {
+    public String toFullName() {
         return this.getFirst() + " " + this.getLast();
     }
 
-    public String getFullNameAlpha() {
+    public String toFullNameAlpha() {
         return this.getLast() + ", " + this.getFirst();
     }
 
-    public String getShortName() {
+    public String toShortName() {
         return this.getLast().substring(0, 3) + ", " + this.getFirst().charAt(0) + ".";
     }
 }

@@ -20,6 +20,12 @@ public class User {
     public User() {
     }
 
+    public User(Name name, UserRole role, ContactInfo contact) {
+        this.name = name;
+        this.role = role;
+        this.contact = contact;
+    }
+
     public User(String id, Name name, UserRole role, ContactInfo contact) {
         this.id = id;
         this.name = name;
