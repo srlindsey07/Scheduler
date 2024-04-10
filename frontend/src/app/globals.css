@@ -2,53 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-    /* .calendar__day-view {
-        .calendar__resource-header {
-            grid
-        }
-    } */
+@layer base {
 }
 
-/* // @import 'react-big-calendar/lib/sass/styles.scss';
-
-// .rbc-calendar {
-//     .rbc-time-header {
-//         z-index: 1;
-
-//         .rbc-time-header-content {
-//             .rbc-row-resource {
-//                 border: none;
-
-//                 .rbc-header {
-//                     border: none;
-//                 }
-//             }
-//         }
-
-//         .rbc-time-header-gutter {
-//             position: static;
-//         }
-//         .rbc-today {
-//             background-color: transparent;
-//         }
-//     }
-
-//     .rbc-time-content {
-//         .rbc-today {
-//             background-color: transparent;
-//         }
-
-//         .rbc-timeslot-group {
-//             min-height: 50px;
-//         }
-//     }
-
-//     .rbc-current-time-indicator {
-//         height: 2px;
-//     }
-
-//     .rbc-time-view .rbc-row {
-//         min-height: 0;
-//     }
-// } */
+@layer components {
+}

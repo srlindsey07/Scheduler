@@ -5,51 +5,21 @@ import Calendar from '../components/calendar/day-view/calendar'
 import { Appointment } from '../models/appointment-models'
 import { User, UserRole } from '../models/user-models'
 import { fetchAppointments } from '../services/appointments.service'
-
-// TODO: Get providers from API
-const providers: User[] = [
-    {
-        id: '65ff4be0fc13ae7d2050fa9e', //
-        name: { first: 'Joseph', last: 'Williams' },
-        role: UserRole.PROVIDER,
-        contact: { email: '', mobile: '' },
-    },
-    {
-        id: '65ff4be0fc13ae7d2050fa9d', //
-        name: { first: 'Jessica', last: 'Smith' },
-        role: UserRole.PROVIDER,
-        contact: { email: '', mobile: '' },
-    },
-    {
-        id: '65ff4be0fc13ae7d2050faa0', //
-        name: { first: 'Amy', last: 'Jones' },
-        role: UserRole.PROVIDER,
-        contact: { email: '', mobile: '' },
-    },
-    {
-        id: '65ff4be0fc13ae7d2050faa2', //
-        name: { first: 'Sean', last: 'Wilson' },
-        role: UserRole.PROVIDER,
-        contact: { email: '', mobile: '' },
-    },
-    {
-        id: '65ff4be0fc13ae7d2050faa1', //
-        name: { first: 'Miguel', last: 'Garcia' },
-        role: UserRole.PROVIDER,
-        contact: { email: '', mobile: '' },
-    },
-]
+import { fetchUsersByRole } from '../services/users.service'
+import { isLoading } from '../utils/loading'
 
 export default function Schedule() {
     const [appointments, setAppointments] = useState<Appointment[]>([])
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [providers, setProviders] = useState<User[]>([])
+    const [dataIsLoading, setDataIsLoading] = useState<boolean[]>([])
 
     useEffect(() => {
         getAppointments()
+        getProviders()
     }, [])
 
     async function getAppointments() {
-        setIsLoading(true)
+        setDataIsLoading((prev) => isLoading(prev))
 
         const start = moment().startOf('day')
         const end = moment().endOf('day')
@@ -58,12 +28,19 @@ export default function Schedule() {
             start.toISOString(),
             end.toISOString(),
         )
-        console.log(response)
         setAppointments(response)
-        setIsLoading(false)
+        setDataIsLoading((prev) => [...prev.slice(0, -1)])
     }
 
-    if (isLoading) {
+    async function getProviders() {
+        setDataIsLoading((prev) => [...prev, true])
+
+        let response: User[] = await fetchUsersByRole([UserRole.PROVIDER])
+        setProviders(response)
+        setDataIsLoading((prev) => [...prev.slice(0, 1)])
+    }
+
+    if (dataIsLoading.length) {
         return <div>Loading....</div>
     }
 

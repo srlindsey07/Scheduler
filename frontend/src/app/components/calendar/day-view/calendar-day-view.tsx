@@ -1,6 +1,5 @@
 import { CalendarDayViewProps } from '@/app/models/calendar-models'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
 import DayTimeSlots from './day-time-slots'
 
 export default function CalendarDayView({
@@ -9,20 +8,14 @@ export default function CalendarDayView({
     selectedDate,
     workHoursStart = moment(selectedDate).startOf('day'),
     workHoursEnd = moment(selectedDate).endOf('day'),
+    calContainerHeight,
 }: CalendarDayViewProps) {
-    const [mainHeight, setMainHeight] = useState<string>('0')
-
-    useEffect(() => {
-        const height = document.getElementsByTagName('main')[0].offsetHeight
-        setMainHeight(`${height}px`)
-    }, [])
-
     return (
         <div className='flex border'>
             {/* DAY VIEW TIMESLOTS */}
             <div
-                className={`grow overflow-auto`}
-                style={{ maxHeight: `calc(${mainHeight} - 4.35rem)` }}
+                className={`grow overflow-auto relative`}
+                style={{ maxHeight: `calc(${calContainerHeight}px - 4.35rem)` }}
             >
                 <DayTimeSlots
                     appointments={appointments}
@@ -34,7 +27,10 @@ export default function CalendarDayView({
             </div>
 
             {/* SMALL CAL */}
-            <div className='p text-xs'>
+            <div
+                id='calSidebar'
+                className='p text-xs'
+            >
                 {/* TODO: Create month view calendar */}
                 (small calendar will go here)
             </div>

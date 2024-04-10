@@ -106,7 +106,10 @@ export default function DayTimeSlots({
             {/* STICKY_HEADER */}
             <div className='flex sticky top-0 z-10 bg-white shadow'>
                 {/* Empty Time Area */}
-                <div className='w-12 shrink-0 '></div>
+                <div
+                    id='timeGutter'
+                    className='w-12 shrink-0'
+                ></div>
 
                 {/* Provider Column Headers */}
                 <div
@@ -130,7 +133,9 @@ export default function DayTimeSlots({
                 <div className='w-12 shrink-0'></div>
 
                 {/* Time Area */}
-                <div className={`grow grid grid-cols-1 grid-rows-1 h-[2500px]`}>
+                <div
+                    className={`grow grid grid-cols-1 grid-rows-1 h-[2500px] relative`}
+                >
                     {/* grid to mark half hour intervals */}
                     <div
                         className='col-start-1 row-start-1 grid grid-cols-1 '
@@ -180,14 +185,14 @@ export default function DayTimeSlots({
                     >
                         <CurrentTimeMarker getRowStart={getStartRow} />
 
-                        {appointments.length > 0 &&
+                        {appointments?.length > 0 &&
                             appointments.map((appt, i) => (
                                 <Appointment
                                     key={`appt-${i}`}
-                                    startTime={appt.start}
-                                    title={appt.titleDisplay}
+                                    startTime={moment(appt.start)}
+                                    title={appt.patientShortName}
                                     status={appt.status}
-                                    className={`${getProviderColumn(appt.providerId)} ${getStartRow(appt.start)} ${getApptLength(appt.start, appt.end)} ${getAppointmentTypeClass(appt.type)}`}
+                                    className={`${getProviderColumn(appt.providerId)} ${getStartRow(moment(appt.start))} ${getApptLength(moment(appt.start), moment(appt.end))} ${getAppointmentTypeClass(appt.type)}`}
                                 />
                             ))}
                     </ul>

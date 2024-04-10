@@ -1,6 +1,6 @@
 import { CalendarProps, CalendarView } from '@/app/models/calendar-models'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalendarDayView from './calendar-day-view'
 
 export default function Calendar({
@@ -11,6 +11,12 @@ export default function Calendar({
     workHoursEnd,
 }: CalendarProps) {
     const [view, setView] = useState<CalendarView>(CalendarView.DAY)
+    const [mainHeight, setMainHeight] = useState<number>(0)
+
+    useEffect(() => {
+        const height = document.getElementsByTagName('main')[0].offsetHeight
+        setMainHeight(height)
+    }, [])
 
     function renderCalendarView(): React.ReactNode {
         switch (view) {
@@ -22,6 +28,7 @@ export default function Calendar({
                         selectedDate={selectedDate}
                         workHoursStart={workHoursStart}
                         workHoursEnd={workHoursEnd}
+                        calContainerHeight={mainHeight}
                     />
                 )
 
@@ -35,6 +42,7 @@ export default function Calendar({
                         selectedDate={selectedDate}
                         workHoursStart={workHoursStart}
                         workHoursEnd={workHoursEnd}
+                        calContainerHeight={mainHeight}
                     />
                 )
         }
@@ -45,7 +53,7 @@ export default function Calendar({
     }
 
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col relative'>
             {/* CALENDAR HEADER */}
             <div className='text-center text-lg font-bold'>
                 {getFormattedSelectedDate()}
@@ -54,6 +62,11 @@ export default function Calendar({
             </div>
 
             {/* CALENDAR BODY */}
+            {!(appointments?.length > 0) && (
+                <div className='absolute w-80 z-10 left-1/2 top-24 -translate-x-1/2 bg-primary text-primary-contrast-800 text-center shadow-md p'>
+                    No appointments found.
+                </div>
+            )}
             {renderCalendarView()}
         </div>
     )

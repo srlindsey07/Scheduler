@@ -14,10 +14,11 @@ export interface CalendarDayViewProps
     extends Omit<CalendarDayViewTimeProps, 'workHoursStart' | 'workHoursEnd'> {
     workHoursStart?: Moment
     workHoursEnd?: Moment
+    calContainerHeight: number
 }
 
 export interface CalendarProps
-    extends Omit<CalendarDayViewProps, 'selectedDate'> {
+    extends Omit<CalendarDayViewProps, 'selectedDate' | 'calContainerHeight'> {
     selectedDate?: Moment
 }
 
