@@ -1,9 +1,8 @@
 package com.github.srlindsey07.appointmentscheduler.bootstrap;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.srlindsey07.appointmentscheduler.model.Appointment;
 import com.github.srlindsey07.appointmentscheduler.model.Patient;
+import com.github.srlindsey07.appointmentscheduler.model.SeedingData;
 import com.github.srlindsey07.appointmentscheduler.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +12,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,14 +19,17 @@ public class DatabaseSeeder implements ApplicationListener<ContextRefreshedEvent
     @Autowired
     MongoOperations mongoTemplate;
 
+    private DatabaseData databaseData;
+
     Logger logger = LoggerFactory.getLogger(DatabaseSeeder.class);
+
+    public DatabaseSeeder(DatabaseData databaseData) { this.databaseData = databaseData; }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        List<Appointment> appointmentsData = new ArrayList<>();
-        List<Patient> patientsData = new ArrayList<>();
-        List<User> usersData = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+        SeedingData<List<Appointment>> appointmentsData;
+        SeedingData<List<Patient>> patientsData;
+        SeedingData<List<User>> usersData;
 
         // Drop collections
         mongoTemplate.dropCollection(Patient.class);
@@ -38,15 +37,16 @@ public class DatabaseSeeder implements ApplicationListener<ContextRefreshedEvent
         mongoTemplate.dropCollection(Appointment.class);
 
         try {
-            appointmentsData = objectMapper.readValue(new File("src/main/resources/data/appointments.json"), new TypeReference<List<Appointment>>() {});
-            patientsData = objectMapper.readValue(new File("src/main/resources/data/patients.json"), new TypeReference<List<Patient>>() {});
-            usersData = objectMapper.readValue(new File("src/main/resources/data/users.json"), new TypeReference<List<User>>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            patientsData = databaseData.createPatientData(30);
+            mongoTemplate.insert(patientsData.getData(), Patient.class);
 
-        mongoTemplate.insert(patientsData, Patient.class);
-        mongoTemplate.insert(usersData, User.class);
-        mongoTemplate.insert(appointmentsData, Appointment.class);
+            usersData = databaseData.createUserData(6, 3, 1);
+            mongoTemplate.insert(usersData.getData(), User.class);
+
+            appointmentsData = databaseData.createAppointmentData(logger,100, patientsData.getIds(), usersData.getIds());
+            mongoTemplate.insert(appointmentsData.getData(), Appointment.class);
+        } catch (Exception e) {
+            logger.error("There was an error seeding the database: ", e);
+        }
     }
 }
