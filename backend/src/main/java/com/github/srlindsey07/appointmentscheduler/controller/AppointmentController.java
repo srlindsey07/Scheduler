@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,8 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     private AppointmentMapper appointmentMapper;
+
+    public AppointmentController () {}
 
     public AppointmentController(AppointmentMapper appointmentMapper) {
         this.appointmentMapper = appointmentMapper;
@@ -39,7 +42,7 @@ public class AppointmentController {
             Appointment appointment = appointmentService.findById(id);
 
             if (appointment == null) {
-                return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
 
             return new ResponseEntity<>(appointment, HttpStatus.OK);
@@ -68,7 +71,7 @@ public class AppointmentController {
             List<Appointment> result = appointmentService.search(startDate, endDate, providerId, patientId);
 
             if (result.isEmpty()) {
-                return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
             }
 
             List<AppointmentDTO> appointments = result

@@ -10,11 +10,11 @@ import java.time.ZonedDateTime;
 import java.util.*;
 
 @Component
-public class DatabaseData {
+public class MockData {
 
     Faker faker = new Faker();
 
-    public SeedingData<List<Appointment>> createAppointmentData(Logger logger, int amountNeeded, List<String> patientIds, List<String> providerIds) {
+    public SeedingData<List<Appointment>> createAppointmentData(int amountNeeded, List<String> patientIds, List<String> providerIds) {
         int created = 0;
         List<Appointment> appointments = new ArrayList<>();
         List<String> ids = new ArrayList<>();
