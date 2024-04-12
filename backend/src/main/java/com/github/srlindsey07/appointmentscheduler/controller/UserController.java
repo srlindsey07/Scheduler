@@ -26,7 +26,7 @@ public class UserController {
             List<User> result = userService.getByRole(roles);
 
             if (result.isEmpty()) {
-                return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
 
             return new ResponseEntity<>(result, HttpStatus.OK);

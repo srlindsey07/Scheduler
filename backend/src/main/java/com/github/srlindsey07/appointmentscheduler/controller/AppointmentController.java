@@ -21,13 +21,8 @@ public class AppointmentController {
     @Autowired
     AppointmentService appointmentService;
 
-    private AppointmentMapper appointmentMapper;
-
-    public AppointmentController () {}
-
-    public AppointmentController(AppointmentMapper appointmentMapper) {
-        this.appointmentMapper = appointmentMapper;
-    }
+    @Autowired
+    AppointmentMapper appointmentMapper;
 
     /**
      * Get appointments by ID.
