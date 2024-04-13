@@ -17,3 +17,13 @@ export class ContactInfo {
         this.mobile = mobile
     }
 }
+
+export enum ElevationClass {
+    'shadow-none',
+    'shadow-sm',
+    'shadow',
+    'shadow-md',
+    'shadow-lg',
+    'shadow-xl',
+    'shadow-2x',
+}

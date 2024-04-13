@@ -5,15 +5,15 @@ import * as colors from 'tailwindcss/colors'
 // EX: <div className='bg-primary-800 text-primary-contrast-800'></div>
 const primary = {
     ...colors.blue,
-    DEFAULT: colors.blue[500],
+    DEFAULT: colors.blue[700],
     contrast: {
         '50': '#000000',
         '100': '#000000',
         '200': '#000000',
         '300': '#000000',
         '400': '#000000',
-        '500': '#000000',
-        DEFAULT: '#000000',
+        '500': '#FFFFFF',
+        DEFAULT: '#FFFFFF',
         '600': '#FFFFFF',
         '700': '#FFFFFF',
         '800': '#FFFFFF',
@@ -79,7 +79,7 @@ export default {
                 secondary: secondary,
             },
             spacing: {
-                DEFAULT: '1.25rem',
+                DEFAULT: '1.25rem' /* *-5, 20px */,
                 '12.5': '3.125rem',
                 '13': '3.25rem',
             },

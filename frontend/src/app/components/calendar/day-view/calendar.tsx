@@ -1,6 +1,9 @@
 import { CalendarProps, CalendarView } from '@/app/models/calendar-models'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
+import Button from '../../buttons/button'
+import ButtonGroup from '../../buttons/button-group'
 import CalendarDayView from './calendar-day-view'
 
 export default function Calendar({
@@ -55,10 +58,20 @@ export default function Calendar({
     return (
         <div className='flex flex-col relative'>
             {/* CALENDAR HEADER */}
-            <div className='text-center text-lg font-bold'>
-                {getFormattedSelectedDate()}
+            <div className='text-lg font-bold bg-slate-100 p flex justify-between items-center'>
+                <div>{getFormattedSelectedDate()}</div>
 
-                {/* TODO: add next/prev buttons */}
+                <div>
+                    <ButtonGroup variant='outline'>
+                        <Button>
+                            <ChevronLeftIcon />
+                        </Button>
+                        <Button>Today</Button>
+                        <Button>
+                            <ChevronRightIcon />
+                        </Button>
+                    </ButtonGroup>
+                </div>
             </div>
 
             {/* CALENDAR BODY */}
