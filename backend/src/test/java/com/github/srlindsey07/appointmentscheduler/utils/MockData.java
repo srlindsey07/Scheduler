@@ -39,4 +39,22 @@ public class MockData {
     public AppointmentDTO convertToAppointmentDTO(Appointment appt) {
         return appointmentMapper.toDTO(appt);
     }
+
+    public User createUser() {
+        UserRole role = UserRole.values()[faker.number().numberBetween(1, UserRole.values().length)];
+        return createUser(role);
+    }
+
+    public User createUser(UserRole role) {
+        User user = new User();
+        Name name = new Name(faker.name().firstName(), faker.name().lastName());
+        ContactInfo contact = new ContactInfo(faker.internet().emailAddress(), faker.phoneNumber().phoneNumber());
+
+        user.setId(ObjectId.get().toString());
+        user.setName(name);
+        user.setContact(contact);
+        user.setRole(role);
+
+        return user;
+    }
 }

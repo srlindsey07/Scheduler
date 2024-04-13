@@ -4,12 +4,14 @@ import com.github.srlindsey07.appointmentscheduler.controller.AppointmentControl
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ContextConfiguration(classes = AppointmentSchedulerApplication.class)
 @SpringBootTest
+@ActiveProfiles("test")
 class AppointmentSchedulerApplicationTests {
 
 	@Autowired

@@ -26,8 +26,7 @@ public class AppointmentService {
     }
 
     public Appointment findById(String id) {
-        Appointment appointment = mongoTemplate.findById(id, Appointment.class);
-        return appointment;
+        return mongoTemplate.findById(id, Appointment.class);
     }
 
     public List<Appointment> search(ZonedDateTime startDate, ZonedDateTime endDate, String providerId, String patientId) {

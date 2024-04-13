@@ -8,8 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
-@SpringBootApplication
+@SpringBootApplication(excludeName = {"de.flapdoodle.embed.mongo.spring.autoconfigure.EmbeddedMongoAutoConfiguration"})
 @EnableMongoRepositories(basePackages = "com.github.srlindsey07.appointmentscheduler.repository")
 public class AppointmentSchedulerApplication {
 	@Value("${cors.allowed}")
