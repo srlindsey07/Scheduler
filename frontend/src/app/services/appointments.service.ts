@@ -1,3 +1,4 @@
+// import 'server-only'
 import { APPOINTMENTS_API } from '../lib/endpoints'
 
 export async function fetchAppointments(

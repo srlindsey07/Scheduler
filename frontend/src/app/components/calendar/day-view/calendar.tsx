@@ -3,7 +3,9 @@ import {
     CalendarView,
     DateFormat,
 } from '@/app/models/calendar-models'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment, { Moment } from 'moment'
 import React, { useEffect, useState } from 'react'
 import Button from '../../buttons/button'
@@ -86,7 +88,10 @@ export default function Calendar({
                                 )
                             }
                         >
-                            <ChevronLeftIcon />
+                            <FontAwesomeIcon
+                                icon={faChevronLeft}
+                                aria-label={`Previous ${view}`}
+                            />
                         </Button>
                         <Button onClick={() => changeSelectedDate(moment())}>
                             Today
@@ -96,7 +101,10 @@ export default function Calendar({
                                 changeSelectedDate(selectedDate.add(1, 'days'))
                             }
                         >
-                            <ChevronRightIcon />
+                            <FontAwesomeIcon
+                                icon={faChevronRight}
+                                aria-label={`Next ${view}`}
+                            />
                         </Button>
                     </ButtonGroup>
 

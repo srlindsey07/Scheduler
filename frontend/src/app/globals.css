@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+    }
+
+    .bg-transition {
+        @apply transition-colors duration-300 ease-in-out;
+    }
 }
 
 @layer components {
