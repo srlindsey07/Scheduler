@@ -42,7 +42,7 @@ export default function Button({
             onClick={onClick}
             type={type}
             disabled={disabled}
-            className={`button flex justify-center h-11 *:h-full ${applyButtonVariant()} ${ElevationClass[elevation]} ${className ? className : ''}`}
+            className={`button flex justify-center h-11 *:h-6 ${applyButtonVariant()} ${ElevationClass[elevation]} ${className ? className : ''}`}
         >
             {children}
         </button>

@@ -72,12 +72,12 @@ export default function Calendar({
     }
 
     return (
-        <div className='flex flex-col relative'>
+        <div className='flex flex-col relative border border-slate-300 rounded'>
             {/* CALENDAR HEADER */}
             <div className='text-lg font-bold bg-slate-100 px flex justify-between items-center h-20'>
                 <div>{selectedDate.format(DateFormat.DISPLAY)}</div>
 
-                <div>
+                <div className='flex'>
                     <ButtonGroup variant='outline'>
                         <Button
                             onClick={() =>
@@ -99,6 +99,13 @@ export default function Calendar({
                             <ChevronRightIcon />
                         </Button>
                     </ButtonGroup>
+
+                    <Button
+                        variant='primary'
+                        className='ml'
+                    >
+                        Create
+                    </Button>
                 </div>
             </div>
 

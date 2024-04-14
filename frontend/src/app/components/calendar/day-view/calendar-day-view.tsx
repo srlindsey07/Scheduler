@@ -11,7 +11,7 @@ export default function CalendarDayView({
     calContainerHeight,
 }: CalendarDayViewProps) {
     return (
-        <div className='flex border h-full'>
+        <div className='flex h-full'>
             {/* DAY VIEW TIMESLOTS */}
             <div
                 className={`grow overflow-auto relative`}

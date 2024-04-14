@@ -7,7 +7,7 @@
 
 @layer components {
     .button {
-        @apply py-2 px-5 font-medium;
+        @apply flex justify-center items-center px font-medium;
     }
 
     .button:not(.button-unstyled) {
