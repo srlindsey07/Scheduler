@@ -1,5 +1,3 @@
-import { Moment } from 'moment'
-
 /**
  * Object to send new/updated appointment info to API
  *
@@ -67,9 +65,7 @@ export class Appointment extends AppointmentDTO {
 }
 
 export interface AppointmentProps {
-    startTime: Moment
-    title: string
-    status: AppointmentStatus
+    appointment: Appointment
     className?: string
 }
 

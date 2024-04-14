@@ -11,12 +11,13 @@ export default function CalendarDayView({
     calContainerHeight,
 }: CalendarDayViewProps) {
     return (
-        <div className='flex border'>
+        <div className='flex border h-full'>
             {/* DAY VIEW TIMESLOTS */}
             <div
                 className={`grow overflow-auto relative`}
-                style={{ maxHeight: `calc(${calContainerHeight}px - 4.35rem)` }}
+                style={{ height: `calc(${calContainerHeight}px - 7.6rem)` }}
             >
+                {/* subtract calendar header height and padding above/below calendar */}
                 <DayTimeSlots
                     appointments={appointments}
                     providers={providers}

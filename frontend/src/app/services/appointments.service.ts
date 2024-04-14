@@ -24,6 +24,8 @@ export async function fetchAppointments(
         }).then((response) => {
             if (!response.ok) {
                 throw new Error(`There was an error ${response.statusText}`)
+            } else if (response.status === 204) {
+                return []
             }
             return response.json()
         })

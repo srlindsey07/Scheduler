@@ -1,6 +1,7 @@
 import {
     AppointmentProps,
     AppointmentStatus,
+    AppointmentType,
 } from '@/app/models/appointment-models'
 import { TimeFormat } from '@/app/models/calendar-models'
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
@@ -9,15 +10,16 @@ import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons/faCalendarChe
 import { faCalendarXmark } from '@fortawesome/free-solid-svg-icons/faCalendarXmark'
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import moment from 'moment'
 
 export default function Appointment({
-    className,
-    startTime,
-    title,
-    status,
+    appointment,
+    className = '',
 }: AppointmentProps) {
+    const start = moment(appointment.start)
+
     function getStatusIcon(): IconDefinition {
-        switch (status) {
+        switch (appointment.status) {
             case AppointmentStatus.SCHEDULED:
                 return faCalendar
 
@@ -36,7 +38,7 @@ export default function Appointment({
     }
 
     function getIconStyling(): string {
-        switch (status) {
+        switch (appointment.status) {
             case AppointmentStatus.SCHEDULED:
                 return 'text-slate-600'
 
@@ -54,14 +56,36 @@ export default function Appointment({
         }
     }
 
+    function getAppointmentTypeClass(): string {
+        switch (appointment.type) {
+            case AppointmentType.ROUTINE:
+                return 'bg-sky-100 text-sky-700 shadow-sm'
+
+            case AppointmentType.URGENT:
+                return 'bg-orange-100 text-orange-700 shadow-sm'
+
+            case AppointmentType.FOLLOW_UP:
+                return 'bg-lime-100 text-lime-700 shadow-sm'
+
+            case AppointmentType.NEW_PATIENT:
+                return 'bg-violet-100 text-violet-700 shadow-sm'
+
+            case AppointmentType.OFFICE_VISIT:
+                return 'bg-pink-100 text-pink-700 shadow-sm'
+
+            default:
+                return 'bg-sky-100 text-sky-700 shadow-sm'
+        }
+    }
+
     return (
         <li
-            className={`bg-blue-100 m-1 p-1 rounded text-sm relative ${className}`}
+            className={`bg-blue-100 m-1 p-1 rounded text-sm relative ${getAppointmentTypeClass()} ${className}`}
         >
-            <span>{`${startTime.format(TimeFormat.DISPLAY)} - ${title}`}</span>
+            <span>{`${start.format(TimeFormat.DISPLAY)} - ${appointment.patientShortName}`}</span>
             <FontAwesomeIcon
                 icon={getStatusIcon()}
-                title={status.toString()}
+                title={appointment.status.toString()}
                 className={`bg-white rounded-full p-1.5 text-sm absolute -top-1.5 -right-0.5 shadow-sm ${getIconStyling()}`}
             />
         </li>

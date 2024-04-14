@@ -19,7 +19,14 @@ export interface CalendarDayViewProps
 
 export interface CalendarProps
     extends Omit<CalendarDayViewProps, 'selectedDate' | 'calContainerHeight'> {
-    selectedDate?: Moment
+    defaultView?: CalendarView
+    defaultDate?: Moment
+    onDateChange?: (e: CalendarDateChange) => void
+}
+
+export interface CalendarDateChange {
+    view: CalendarView
+    newDate: Moment
 }
 
 export enum CalendarView {
@@ -31,4 +38,8 @@ export enum CalendarView {
 export enum TimeFormat {
     DISPLAY = 'h:mm A',
     SHORT_DISPLAY = 'h A',
+}
+
+export enum DateFormat {
+    DISPLAY = 'MMMM D, YYYY',
 }

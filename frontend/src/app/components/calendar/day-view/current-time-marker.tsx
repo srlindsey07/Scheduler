@@ -15,7 +15,6 @@ export default function CurrentTimeMarker({
 
         const timer = setInterval(() => {
             setCurrentTime(moment())
-            console.log('set current time')
         }, 60000)
 
         return () => {

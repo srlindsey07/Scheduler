@@ -1,4 +1,3 @@
-import { AppointmentType } from '@/app/models/appointment-models'
 import {
     CalendarDayViewTimeProps,
     TimeFormat,
@@ -77,28 +76,6 @@ export default function DayTimeSlots({
         }
 
         return false
-    }
-
-    function getAppointmentTypeClass(type: AppointmentType): string {
-        switch (type) {
-            case AppointmentType.ROUTINE:
-                return 'bg-sky-100 text-sky-700 shadow-sm'
-
-            case AppointmentType.URGENT:
-                return 'bg-orange-100 text-orange-700 shadow-sm'
-
-            case AppointmentType.FOLLOW_UP:
-                return 'bg-lime-100 text-lime-700 shadow-sm'
-
-            case AppointmentType.NEW_PATIENT:
-                return 'bg-violet-100 text-violet-700 shadow-sm'
-
-            case AppointmentType.OFFICE_VISIT:
-                return 'bg-pink-100 text-pink-700 shadow-sm'
-
-            default:
-                return 'bg-sky-100 text-sky-700 shadow-sm'
-        }
     }
 
     return (
@@ -189,10 +166,11 @@ export default function DayTimeSlots({
                             appointments.map((appt, i) => (
                                 <Appointment
                                     key={`appt-${i}`}
-                                    startTime={moment(appt.start)}
-                                    title={appt.patientShortName}
-                                    status={appt.status}
-                                    className={`${getProviderColumn(appt.providerId)} ${getStartRow(moment(appt.start))} ${getApptLength(moment(appt.start), moment(appt.end))} ${getAppointmentTypeClass(appt.type)}`}
+                                    appointment={appt}
+                                    className={`${getApptLength(
+                                        moment(appt.start),
+                                        moment(appt.end),
+                                    )} ${getProviderColumn(appt.providerId)} ${getStartRow(moment(appt.start))}`}
                                 />
                             ))}
                     </ul>

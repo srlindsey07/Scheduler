@@ -1,6 +1,10 @@
-import { CalendarProps, CalendarView } from '@/app/models/calendar-models'
+import {
+    CalendarProps,
+    CalendarView,
+    DateFormat,
+} from '@/app/models/calendar-models'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import React, { useEffect, useState } from 'react'
 import Button from '../../buttons/button'
 import ButtonGroup from '../../buttons/button-group'
@@ -9,16 +13,21 @@ import CalendarDayView from './calendar-day-view'
 export default function Calendar({
     appointments,
     providers,
-    selectedDate = moment(),
+    defaultDate = moment(),
     workHoursStart,
     workHoursEnd,
+    onDateChange,
+    defaultView = CalendarView.DAY,
 }: CalendarProps) {
-    const [view, setView] = useState<CalendarView>(CalendarView.DAY)
+    const [view, setView] = useState<CalendarView>(defaultView)
     const [mainHeight, setMainHeight] = useState<number>(0)
+    const [selectedDate, setSelectedDate] = useState<Moment>(defaultDate)
+    const [loaded, setLoaded] = useState<boolean>(false)
 
     useEffect(() => {
         const height = document.getElementsByTagName('main')[0].offsetHeight
         setMainHeight(height)
+        setLoaded(true)
     }, [])
 
     function renderCalendarView(): React.ReactNode {
@@ -51,23 +60,42 @@ export default function Calendar({
         }
     }
 
-    function getFormattedSelectedDate(): string {
-        return selectedDate.format('MMMM D, YYYY')
+    function changeSelectedDate(date: Moment): void {
+        setSelectedDate(moment(date))
+
+        if (onDateChange) {
+            onDateChange({
+                view: view,
+                newDate: date,
+            })
+        }
     }
 
     return (
         <div className='flex flex-col relative'>
             {/* CALENDAR HEADER */}
-            <div className='text-lg font-bold bg-slate-100 p flex justify-between items-center'>
-                <div>{getFormattedSelectedDate()}</div>
+            <div className='text-lg font-bold bg-slate-100 px flex justify-between items-center h-20'>
+                <div>{selectedDate.format(DateFormat.DISPLAY)}</div>
 
                 <div>
                     <ButtonGroup variant='outline'>
-                        <Button>
+                        <Button
+                            onClick={() =>
+                                changeSelectedDate(
+                                    selectedDate.subtract(1, 'days'),
+                                )
+                            }
+                        >
                             <ChevronLeftIcon />
                         </Button>
-                        <Button>Today</Button>
-                        <Button>
+                        <Button onClick={() => changeSelectedDate(moment())}>
+                            Today
+                        </Button>
+                        <Button
+                            onClick={() =>
+                                changeSelectedDate(selectedDate.add(1, 'days'))
+                            }
+                        >
                             <ChevronRightIcon />
                         </Button>
                     </ButtonGroup>
@@ -75,7 +103,7 @@ export default function Calendar({
             </div>
 
             {/* CALENDAR BODY */}
-            {!(appointments?.length > 0) && (
+            {appointments?.length === 0 && loaded && (
                 <div className='absolute w-80 z-10 left-1/2 top-24 -translate-x-1/2 bg-primary text-primary-contrast-800 text-center shadow-md p'>
                     No appointments found.
                 </div>
