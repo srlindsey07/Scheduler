@@ -20,6 +20,7 @@ export default function Calendar({
     workHoursEnd,
     onDateChange,
     defaultView = CalendarView.DAY,
+    onCreateOpen = () => null,
 }: CalendarProps) {
     const [view, setView] = useState<CalendarView>(defaultView)
     const [mainHeight, setMainHeight] = useState<number>(0)
@@ -93,9 +94,11 @@ export default function Calendar({
                                 aria-label={`Previous ${view}`}
                             />
                         </Button>
+
                         <Button onClick={() => changeSelectedDate(moment())}>
                             Today
                         </Button>
+
                         <Button
                             onClick={() =>
                                 changeSelectedDate(selectedDate.add(1, 'days'))
@@ -111,6 +114,7 @@ export default function Calendar({
                     <Button
                         variant='primary'
                         className='ml'
+                        onClick={onCreateOpen}
                     >
                         Create
                     </Button>

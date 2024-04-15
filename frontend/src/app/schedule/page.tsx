@@ -2,6 +2,7 @@
 import moment, { Moment } from 'moment'
 import { useEffect, useState } from 'react'
 import Calendar from '../components/calendar/day-view/calendar'
+import Dialog from '../components/dialog/dialog'
 import { Appointment } from '../models/appointment-models'
 import { CalendarDateChange, CalendarView } from '../models/calendar-models'
 import { User, UserRole } from '../models/user-models'
@@ -13,6 +14,7 @@ export default function Schedule() {
     const [appointments, setAppointments] = useState<Appointment[]>([])
     const [providers, setProviders] = useState<User[]>([])
     const [dataIsLoading, setDataIsLoading] = useState<boolean[]>([])
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
         getAppointments(moment().startOf('day'), moment().endOf('day'))
@@ -48,19 +50,25 @@ export default function Schedule() {
         }
     }
 
-    // TODO: This loading block causes the page to not render.
-    // if (dataIsLoading.length > 0) {
-    //     return <div>Loading....</div>
-    // }
-
     return (
-        <Calendar
-            appointments={appointments}
-            providers={providers}
-            workHoursStart={moment().set({ hour: 8, minute: 0 })}
-            workHoursEnd={moment().set({ hour: 17, minute: 0 })}
-            onDateChange={(e) => dateChange(e)}
-            defaultView={CalendarView.DAY}
-        />
+        <>
+            {/* Move to it's own component and add create form */}
+            <Dialog
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+            >
+                <h2>Dialog Title</h2>
+            </Dialog>
+
+            <Calendar
+                appointments={appointments}
+                providers={providers}
+                workHoursStart={moment().set({ hour: 8, minute: 0 })}
+                workHoursEnd={moment().set({ hour: 17, minute: 0 })}
+                onDateChange={(e) => dateChange(e)}
+                defaultView={CalendarView.DAY}
+                onCreateOpen={() => setIsOpen(true)}
+            />
+        </>
     )
 }

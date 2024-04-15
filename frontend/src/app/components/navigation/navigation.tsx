@@ -17,7 +17,6 @@ export default function Navigation({
     )
 
     function clickHandler(value: string) {
-        console.log(`Clicked ${value}`)
         setSelected(value)
         onAction(value)
     }

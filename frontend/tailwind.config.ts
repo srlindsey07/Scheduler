@@ -41,6 +41,18 @@ const secondary = {
     },
 }
 
+const smoke = {
+    '100': 'rgba(0,0,0,0.1)',
+    '200': 'rgba(0,0,0,0.2)',
+    '300': 'rgba(0,0,0,0.3)',
+    '400': 'rgba(0,0,0,0.4)',
+    '500': 'rgba(0,0,0,0.5)',
+    '600': 'rgba(0,0,0,0.6)',
+    '700': 'rgba(0,0,0,0.7)',
+    '800': 'rgba(0,0,0,0.8)',
+    '900': 'rgba(0,0,0,0.9)',
+}
+
 export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
     safelist: [
@@ -74,9 +86,30 @@ export default {
     ],
     theme: {
         extend: {
+            animation: {
+                'fade-in': 'show 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                'fade-out': 'hide 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+            },
+            keyframes: {
+                show: {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(min(100px, 5vh))',
+                    },
+                    '100%': { opacity: '1', transform: 'translateY(0%)' },
+                },
+                hide: {
+                    '0%': { opacity: '1', transform: 'translateY(0%)' },
+                    '100%': {
+                        opacity: '0',
+                        transform: 'translateY(min(100px, 5vh))',
+                    },
+                },
+            },
             colors: {
                 primary: primary,
                 secondary: secondary,
+                smoke: smoke,
             },
             spacing: {
                 DEFAULT: '1.25rem' /* *-5, 20px */,
