@@ -4,7 +4,7 @@ import { Children, cloneElement, ReactElement } from 'react'
 export default function ButtonGroup({
     children,
     label,
-    className,
+    className = '',
     variant = 'tonal',
     elevation = 0,
 }: {
@@ -26,7 +26,7 @@ export default function ButtonGroup({
         <div
             role='group'
             aria-label={!!label ? label : ''}
-            className={`button-group flex flex-row rounded-full ${ElevationClass[elevation]} ${className ? className : ''}`}
+            className={`button-group flex flex-row rounded-full ${ElevationClass[elevation]} ${className}`}
         >
             {styledChildren}
         </div>

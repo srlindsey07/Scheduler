@@ -11,6 +11,7 @@ import { faCalendarXmark } from '@fortawesome/free-solid-svg-icons/faCalendarXma
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment from 'moment'
+import { useMemo } from 'react'
 
 export default function Appointment({
     appointment,
@@ -36,6 +37,24 @@ export default function Appointment({
                 return faCalendar
         }
     }
+    const statusIcon = useMemo(() => {
+        switch (appointment.status) {
+            case AppointmentStatus.SCHEDULED:
+                return faCalendar
+
+            case AppointmentStatus.CONFIRMED:
+                return faCalendarCheck
+
+            case AppointmentStatus.CANCELED:
+                return faCalendarXmark
+
+            case AppointmentStatus.COMPLETE:
+                return faCheck
+
+            default:
+                return faCalendar
+        }
+    }, [appointment])
 
     function getIconStyling(): string {
         switch (appointment.status) {
@@ -84,7 +103,7 @@ export default function Appointment({
         >
             <span>{`${start.format(TimeFormat.DISPLAY)} - ${appointment.patientShortName}`}</span>
             <FontAwesomeIcon
-                icon={getStatusIcon()}
+                icon={statusIcon}
                 title={appointment.status.toString()}
                 className={`bg-white rounded-full p-1.5 text-sm absolute -top-1.5 -right-0.5 shadow-sm ${getIconStyling()}`}
             />

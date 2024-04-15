@@ -1,5 +1,5 @@
 import { ElevationClass } from '@/app/models/shared-models'
-import { ReactNode } from 'react'
+import { ReactNode, useMemo } from 'react'
 
 export default function Button({
     children,
@@ -18,7 +18,7 @@ export default function Button({
     variant?: 'tonal' | 'primary' | 'text' | 'outline' | 'unstyled'
     elevation?: ElevationClass
 }) {
-    const applyButtonVariant = (): string => {
+    const buttonVariant = useMemo(() => {
         switch (variant) {
             case 'tonal':
                 return 'button-tonal'
@@ -35,14 +35,14 @@ export default function Button({
             default:
                 return 'button-unstyled'
         }
-    }
+    }, [variant])
 
     return (
         <button
             onClick={onClick}
             type={type}
             disabled={disabled}
-            className={`button flex justify-center h-11 *:h-6 ${applyButtonVariant()} ${ElevationClass[elevation]} ${className ? className : ''}`}
+            className={`button flex justify-center h-11 *:h-6 ${buttonVariant} ${ElevationClass[elevation]} ${className ? className : ''}`}
         >
             {children}
         </button>

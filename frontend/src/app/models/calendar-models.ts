@@ -22,6 +22,7 @@ export interface CalendarProps
     defaultView?: CalendarView
     defaultDate?: Moment
     onDateChange?: (e: CalendarDateChange) => void
+    onCreateOpen?: () => void
 }
 
 export interface CalendarDateChange {
