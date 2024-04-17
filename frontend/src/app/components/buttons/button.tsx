@@ -1,23 +1,23 @@
 import { ElevationClass } from '@/app/models/shared-models'
-import { ReactNode, useMemo } from 'react'
+import { ButtonHTMLAttributes, ReactNode, useMemo } from 'react'
 
-export default function Button({
-    children,
-    onClick,
-    type = 'button',
-    disabled = false,
-    className,
-    variant = 'tonal',
-    elevation = 0,
-}: {
+export interface ButtonProps
+    extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, ''> {
     children: ReactNode
-    onClick?: () => void
-    type?: 'submit' | 'reset' | 'button'
-    disabled?: boolean
+    type?: 'button' | 'submit'
     className?: string
     variant?: 'tonal' | 'primary' | 'text' | 'outline' | 'unstyled'
     elevation?: ElevationClass
-}) {
+}
+export default function Button({
+    children,
+    type = 'button',
+    className,
+    variant = 'tonal',
+    elevation = 0,
+    ...props
+}: ButtonProps) {
+    const { onClick, disabled } = props
     const buttonVariant = useMemo(() => {
         switch (variant) {
             case 'tonal':

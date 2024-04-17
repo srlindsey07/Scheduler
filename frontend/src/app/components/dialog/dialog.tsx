@@ -29,7 +29,7 @@ export default function Dialog({ open, onClose, children }: DialogProps) {
     const dialogClasses = useMemo(() => {
         const classes = [
             'backdrop:bg-smoke-300',
-            'rounded',
+            'rounded-xl',
             'animate-fade-in',
             'w-full',
             'max-w-md',

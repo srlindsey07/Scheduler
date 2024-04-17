@@ -30,7 +30,7 @@ export default function CalendarDayView({
             {/* SMALL CAL */}
             <div
                 id='calSidebar'
-                className='p text-xs'
+                className='p text-xs hidden'
             >
                 {/* TODO: Create month view calendar */}
                 (small calendar will go here)

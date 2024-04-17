@@ -116,9 +116,6 @@ export default {
                 '12.5': '3.125rem',
                 '13': '3.25rem',
             },
-            borderRadius: {
-                DEFAULT: '0.75rem' /* rounded-xl 12px */,
-            },
             // Extend the use of row-span-* from 12 to 288
             gridRow: Object.fromEntries(
                 Array(276)

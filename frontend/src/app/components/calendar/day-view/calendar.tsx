@@ -75,7 +75,7 @@ export default function Calendar({
     }
 
     return (
-        <div className='flex flex-col relative border border-slate-300 rounded'>
+        <div className='flex flex-col relative border border-slate-300 rounded-xl'>
             {/* CALENDAR HEADER */}
             <div className='text-lg font-bold bg-slate-100 px flex justify-between items-center h-20'>
                 <div>{selectedDate.format(DateFormat.DISPLAY)}</div>

@@ -99,7 +99,7 @@ export default function Appointment({
 
     return (
         <li
-            className={`bg-blue-100 m-1 p-1 rounded text-sm relative ${getAppointmentTypeClass()} ${className}`}
+            className={`bg-blue-100 m-1 p-1 rounded-xl text-sm relative ${getAppointmentTypeClass()} ${className}`}
         >
             <span>{`${start.format(TimeFormat.DISPLAY)} - ${appointment.patientShortName}`}</span>
             <FontAwesomeIcon

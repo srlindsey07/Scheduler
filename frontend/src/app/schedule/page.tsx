@@ -2,13 +2,13 @@
 import moment, { Moment } from 'moment'
 import { useEffect, useState } from 'react'
 import Calendar from '../components/calendar/day-view/calendar'
-import Dialog from '../components/dialog/dialog'
 import { Appointment } from '../models/appointment-models'
 import { CalendarDateChange, CalendarView } from '../models/calendar-models'
 import { User, UserRole } from '../models/user-models'
 import { fetchAppointments } from '../services/appointments.service'
 import { fetchUsersByRole } from '../services/users.service'
 import { isLoading } from '../utils/loading'
+import NewAppointmentDialog from './new-appt-dialog'
 
 export default function Schedule() {
     const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -52,13 +52,10 @@ export default function Schedule() {
 
     return (
         <>
-            {/* Move to it's own component and add create form */}
-            <Dialog
+            <NewAppointmentDialog
                 open={isOpen}
                 onClose={() => setIsOpen(false)}
-            >
-                <h2>Dialog Title</h2>
-            </Dialog>
+            />
 
             <Calendar
                 appointments={appointments}

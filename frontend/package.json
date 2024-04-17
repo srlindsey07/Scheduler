@@ -18,6 +18,7 @@
         "react": "^18",
         "react-big-calendar": "^1.11.2",
         "react-dom": "^18",
+        "react-hook-form": "^7.51.3",
         "server-only": "^0.0.1"
     },
     "devDependencies": {
