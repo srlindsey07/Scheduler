@@ -3,7 +3,6 @@ import moment from 'moment'
 import DayTimeSlots from './day-time-slots'
 
 export default function CalendarDayView({
-    appointments,
     providers,
     selectedDate,
     workHoursStart = moment(selectedDate).startOf('day'),
@@ -19,7 +18,6 @@ export default function CalendarDayView({
             >
                 {/* subtract calendar header height and padding above/below calendar */}
                 <DayTimeSlots
-                    appointments={appointments}
                     providers={providers}
                     selectedDate={selectedDate}
                     workHoursStart={workHoursStart}

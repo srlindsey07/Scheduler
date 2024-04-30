@@ -1,3 +1,4 @@
+import { useAppointments } from '@/app/context/AppointmentContext'
 import {
     CalendarProps,
     CalendarView,
@@ -8,12 +9,11 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment, { Moment } from 'moment'
 import React, { useEffect, useState } from 'react'
-import Button from '../../buttons/button'
-import ButtonGroup from '../../buttons/button-group'
-import CalendarDayView from './calendar-day-view'
+import Button from '../buttons/button'
+import ButtonGroup from '../buttons/button-group'
+import CalendarDayView from './day-view/calendar-day-view'
 
 export default function Calendar({
-    appointments,
     providers,
     defaultDate = moment(),
     workHoursStart,
@@ -22,6 +22,7 @@ export default function Calendar({
     defaultView = CalendarView.DAY,
     onCreateOpen = () => null,
 }: CalendarProps) {
+    const { appointmentState } = useAppointments()
     const [view, setView] = useState<CalendarView>(defaultView)
     const [mainHeight, setMainHeight] = useState<number>(0)
     const [selectedDate, setSelectedDate] = useState<Moment>(defaultDate)
@@ -38,7 +39,6 @@ export default function Calendar({
             case CalendarView.DAY:
                 return (
                     <CalendarDayView
-                        appointments={appointments}
                         providers={providers}
                         selectedDate={selectedDate}
                         workHoursStart={workHoursStart}
@@ -50,16 +50,7 @@ export default function Calendar({
             // TODO: Add week and month views
 
             default:
-                return (
-                    <CalendarDayView
-                        appointments={appointments}
-                        providers={providers}
-                        selectedDate={selectedDate}
-                        workHoursStart={workHoursStart}
-                        workHoursEnd={workHoursEnd}
-                        calContainerHeight={mainHeight}
-                    />
-                )
+                throw new Error(`Unhandled calendar view option`)
         }
     }
 
@@ -122,7 +113,7 @@ export default function Calendar({
             </div>
 
             {/* CALENDAR BODY */}
-            {appointments?.length === 0 && loaded && (
+            {appointmentState.appointments?.length === 0 && loaded && (
                 <div className='absolute w-80 z-10 left-1/2 top-24 -translate-x-1/2 bg-primary text-primary-contrast-800 text-center shadow-md p'>
                     No appointments found.
                 </div>

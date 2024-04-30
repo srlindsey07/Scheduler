@@ -1,3 +1,4 @@
+import { useAppointments } from '@/app/context/AppointmentContext'
 import {
     CalendarDayViewTimeProps,
     TimeFormat,
@@ -8,12 +9,13 @@ import CurrentTimeMarker from './current-time-marker'
 
 // TODO: Add click events to open appointment details
 export default function DayTimeSlots({
-    appointments,
     providers,
     selectedDate,
     workHoursStart,
     workHoursEnd,
 }: CalendarDayViewTimeProps) {
+    const { appointmentState } = useAppointments()
+
     // set intervals for the full day
     const intervals30min: Moment[] = get30MinIntervals()
     const num5MinIntervals: number = getNum5MinIntervals(
@@ -162,8 +164,8 @@ export default function DayTimeSlots({
                     >
                         <CurrentTimeMarker getRowStart={getStartRow} />
 
-                        {appointments?.length > 0 &&
-                            appointments.map((appt, i) => (
+                        {appointmentState.appointments?.length > 0 &&
+                            appointmentState.appointments.map((appt, i) => (
                                 <Appointment
                                     key={`appt-${i}`}
                                     appointment={appt}

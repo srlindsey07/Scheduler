@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '../components/buttons/button'
 import Dialog from '../components/dialog/dialog'
@@ -7,10 +8,7 @@ import DialogHeader from '../components/dialog/dialog-header'
 import TextField from '../components/form-fields/text-field'
 import { DialogComponentProps } from '../models/dialog-models'
 
-export default function NewAppointmentDialog({
-    open,
-    onClose,
-}: DialogComponentProps) {
+function NewAppointmentDialog({ open, onClose }: DialogComponentProps) {
     interface NewAppointmentForm {
         firstName: string
         lastName: string
@@ -30,6 +28,7 @@ export default function NewAppointmentDialog({
             email: '',
         },
     })
+
     const onSubmit = (data: any) => {
         console.log(data)
     }
@@ -94,3 +93,4 @@ export default function NewAppointmentDialog({
         </Dialog>
     )
 }
+export default memo(NewAppointmentDialog)

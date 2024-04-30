@@ -1,13 +1,11 @@
+'use client'
 import * as appointmentService from '@/services/appointments.service'
 import { Moment } from 'moment'
 import { createContext, ReactNode, useContext, useReducer } from 'react'
 import { Appointment } from '../models/appointment-models'
 
 type Action =
-    | {
-          type: 'UPDATE_APPOINTMENTS'
-          payload: Appointment[]
-      }
+    | { type: 'UPDATE_APPOINTMENTS'; payload: Appointment[] }
     | { type: 'GET_APPOINTMENTS'; payload: string }
 
 type Dispatch = (action: Action) => void

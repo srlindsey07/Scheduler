@@ -1,9 +1,7 @@
 import { Moment } from 'moment'
-import { Appointment } from './appointment-models'
 import { User } from './user-models'
 
 export interface CalendarDayViewTimeProps {
-    appointments: Appointment[]
     providers: User[]
     selectedDate: Moment
     workHoursStart: Moment
