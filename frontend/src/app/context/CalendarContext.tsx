@@ -1,3 +1,4 @@
+'use client'
 import moment, { Moment } from 'moment'
 import { createContext, ReactNode, useContext, useReducer } from 'react'
 

@@ -1,12 +1,11 @@
 import { CalendarDayViewProps } from '@/app/models/calendar-models'
-import moment from 'moment'
+import { memo } from 'react'
 import DayTimeSlots from './day-time-slots'
 
-export default function CalendarDayView({
+function CalendarDayView({
     providers,
-    selectedDate,
-    workHoursStart = moment(selectedDate).startOf('day'),
-    workHoursEnd = moment(selectedDate).endOf('day'),
+    workHoursStart,
+    workHoursEnd,
     calContainerHeight,
 }: CalendarDayViewProps) {
     return (
@@ -19,7 +18,6 @@ export default function CalendarDayView({
                 {/* subtract calendar header height and padding above/below calendar */}
                 <DayTimeSlots
                     providers={providers}
-                    selectedDate={selectedDate}
                     workHoursStart={workHoursStart}
                     workHoursEnd={workHoursEnd}
                 />
@@ -36,3 +34,4 @@ export default function CalendarDayView({
         </div>
     )
 }
+export default memo(CalendarDayView)

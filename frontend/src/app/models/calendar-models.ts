@@ -3,9 +3,8 @@ import { User } from './user-models'
 
 export interface CalendarDayViewTimeProps {
     providers: User[]
-    selectedDate: Moment
-    workHoursStart: Moment
-    workHoursEnd: Moment
+    workHoursStart?: Moment
+    workHoursEnd?: Moment
 }
 
 export interface CalendarDayViewProps
@@ -16,7 +15,7 @@ export interface CalendarDayViewProps
 }
 
 export interface CalendarProps
-    extends Omit<CalendarDayViewProps, 'selectedDate' | 'calContainerHeight'> {
+    extends Omit<CalendarDayViewProps, 'calContainerHeight'> {
     defaultView?: CalendarView
     defaultDate?: Moment
     onDateChange?: (e: CalendarDateChange) => void

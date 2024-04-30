@@ -10,7 +10,6 @@ import CurrentTimeMarker from './current-time-marker'
 // TODO: Add click events to open appointment details
 export default function DayTimeSlots({
     providers,
-    selectedDate,
     workHoursStart,
     workHoursEnd,
 }: CalendarDayViewTimeProps) {

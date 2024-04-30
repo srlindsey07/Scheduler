@@ -1,4 +1,5 @@
 import { useAppointments } from '@/app/context/AppointmentContext'
+import { useCalendar } from '@/app/context/CalendarContext'
 import {
     CalendarProps,
     CalendarView,
@@ -16,22 +17,23 @@ import CalendarDayView from './day-view/calendar-day-view'
 export default function Calendar({
     providers,
     defaultDate = moment(),
-    workHoursStart,
-    workHoursEnd,
+    workHoursStart = moment().startOf('day'),
+    workHoursEnd = moment().endOf('day'),
     onDateChange,
     defaultView = CalendarView.DAY,
     onCreateOpen = () => null,
 }: CalendarProps) {
     const { appointmentState } = useAppointments()
+    const { calendarState, calendarDispatch } = useCalendar()
     const [view, setView] = useState<CalendarView>(defaultView)
     const [mainHeight, setMainHeight] = useState<number>(0)
-    const [selectedDate, setSelectedDate] = useState<Moment>(defaultDate)
     const [loaded, setLoaded] = useState<boolean>(false)
 
     useEffect(() => {
         const height = document.getElementsByTagName('main')[0].offsetHeight
         setMainHeight(height)
         setLoaded(true)
+        calendarDispatch({ type: 'UPDATE_ACTIVE_DATE', payload: defaultDate })
     }, [])
 
     function renderCalendarView(): React.ReactNode {
@@ -40,7 +42,6 @@ export default function Calendar({
                 return (
                     <CalendarDayView
                         providers={providers}
-                        selectedDate={selectedDate}
                         workHoursStart={workHoursStart}
                         workHoursEnd={workHoursEnd}
                         calContainerHeight={mainHeight}
@@ -55,7 +56,7 @@ export default function Calendar({
     }
 
     function changeSelectedDate(date: Moment): void {
-        setSelectedDate(moment(date))
+        calendarDispatch({ type: 'UPDATE_ACTIVE_DATE', payload: moment(date) })
 
         if (onDateChange) {
             onDateChange({
@@ -69,14 +70,17 @@ export default function Calendar({
         <div className='flex flex-col relative border border-slate-300 rounded-xl'>
             {/* CALENDAR HEADER */}
             <div className='text-lg font-bold bg-slate-100 px flex justify-between items-center h-20'>
-                <div>{selectedDate.format(DateFormat.DISPLAY)}</div>
+                <div>{calendarState.activeDate.format(DateFormat.DISPLAY)}</div>
 
                 <div className='flex'>
                     <ButtonGroup variant='outline'>
                         <Button
                             onClick={() =>
                                 changeSelectedDate(
-                                    selectedDate.subtract(1, 'days'),
+                                    calendarState.activeDate.subtract(
+                                        1,
+                                        'days',
+                                    ),
                                 )
                             }
                         >
@@ -92,7 +96,9 @@ export default function Calendar({
 
                         <Button
                             onClick={() =>
-                                changeSelectedDate(selectedDate.add(1, 'days'))
+                                changeSelectedDate(
+                                    calendarState.activeDate.add(1, 'days'),
+                                )
                             }
                         >
                             <FontAwesomeIcon
