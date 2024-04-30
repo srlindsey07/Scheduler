@@ -1,21 +1,15 @@
 # Scheduler Frontend 
 
 ## Getting Started
+The frontend application assumes that you are running the backend application on localhost:8081, which is the default. The port can be updated in the .env file.
 
-First, run `npm install` then one of the following commands:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+With the backend application running, open terminal or command prompt and run `npm install` then `npm run dev`.
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Todo and In Progess Items
+* Unit tests
+* Create new appointment (In progress)
 
 ## File Structure
 ```
