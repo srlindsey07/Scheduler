@@ -1,5 +1,5 @@
 interface HintTextProps {
-    message: string
+    message: string | undefined
     id: string
     error?: boolean
 }
@@ -8,6 +8,8 @@ export default function HintText({
     id,
     error = false,
 }: HintTextProps) {
+    if (!message) return
+
     return (
         <span
             id={id}
