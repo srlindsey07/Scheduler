@@ -15,15 +15,18 @@
             "^.+\\.[t|j]sx?$": "babel-jest"
         },
         "moduleNameMapper": {
-            "@/(.*)$": "<rootDir>/src/app/$1",
             "@/components/(.*)$": "<rootDir>/src/app/components/$1",
             "@/context/(.*)$": "<rootDir>/src/app/context/$1",
             "@/services/(.*)$": "<rootDir>/src/app/services/$1",
             "@/models/(.*)$": "<rootDir>/src/app/models/$1",
             "@/utils/(.*)$": "<rootDir>/src/app/utils/$1",
+            "@/(.*)$": "<rootDir>/src/app/$1",
             "test-utils": "<rootDir>/src/app/utils/test-utils.tsx"
         },
-        "testEnvironment": "jsdom"
+        "testEnvironment": "jsdom",
+        "setupFilesAfterEnv": [
+            "<rootDir>/jest-setup.ts"
+        ]
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -41,11 +44,12 @@
         "@babel/preset-env": "^7.24.5",
         "@babel/preset-react": "^7.24.1",
         "@babel/preset-typescript": "^7.24.1",
+        "@testing-library/jest-dom": "^6.4.2",
         "@testing-library/react": "^15.0.6",
+        "@types/jest": "^29.5.12",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
-        "@types/jest": "^29.5.12",
         "autoprefixer": "^10.4.19",
         "babel-jest": "^29.7.0",
         "eslint": "^8",

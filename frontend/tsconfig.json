@@ -33,7 +33,8 @@
         "**/*.tsx",
         ".next/types/**/*.ts",
         "src/app/components/navigation",
-        "babel.config.js"
+        "babel.config.js",
+        "./jest-setup.ts"
     ],
     "exclude": ["node_modules"]
 }

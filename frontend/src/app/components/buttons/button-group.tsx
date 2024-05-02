@@ -1,19 +1,20 @@
-import { ElevationClass } from '@/app/models/shared-models'
+import { ElevationClass } from '@/models/shared-models'
 import { Children, cloneElement, ReactElement } from 'react'
 
+export interface ButtonGroupProps {
+    children: ReactElement[]
+    label?: string
+    className?: string
+    variant?: 'tonal' | 'primary' | 'text' | 'outline'
+    elevation?: ElevationClass
+}
 export default function ButtonGroup({
     children,
     label,
     className = '',
     variant = 'tonal',
     elevation = 0,
-}: {
-    children: ReactElement[]
-    label?: string
-    className?: string
-    variant?: 'tonal' | 'primary' | 'text' | 'outline'
-    elevation?: ElevationClass
-}) {
+}: ButtonGroupProps) {
     const styledChildren = Children.map(children, (child) => {
         return cloneElement(child, {
             className:
@@ -24,8 +25,9 @@ export default function ButtonGroup({
 
     return (
         <div
+            data-testid='button-group'
             role='group'
-            aria-label={!!label ? label : ''}
+            title={!!label ? label : ''}
             className={`button-group flex flex-row rounded-full ${ElevationClass[elevation]} ${className}`}
         >
             {styledChildren}

@@ -1,23 +1,30 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { render, RenderResult } from 'test-utils'
+import {
+    fireEvent,
+    RenderResult,
+    screen,
+    waitFor,
+} from '@testing-library/react'
+import { render } from 'test-utils'
 import Button, { ButtonProps } from '../button'
 
 describe('Button', () => {
-    it('should render with correct children, type and disabled property', () => {
+    it('should render with correct children, type, disabled property and defaults', () => {
+        const className = 'test-class'
         const props: ButtonProps = {
             children: 'Test child',
-            className: 'test-class',
+            className: className,
         }
+
         createButton(props)
         const button = screen.getByTestId('button')
 
-        expect(button).toBeTruthy()
+        expect(button).toBeInTheDocument()
         expect(button.getAttribute('type')).toEqual('button')
-        expect(button.disabled).toBe(false)
+        expect(button).not.toBeDisabled()
         expect(button.textContent).toContain(props.children)
-        expect(button.classList).toContain('button-tonal')
-        expect(button.classList).toContain('shadow-none')
-        expect(button.classList).toContain(props.className)
+        expect(button).toHaveClass('button-tonal')
+        expect(button).toHaveClass('shadow-none')
+        expect(button).toHaveClass(className)
     })
 
     it('should call provided onClick method when clicked', async () => {
@@ -42,7 +49,7 @@ describe('Button', () => {
         createButton(props)
         const button = screen.getByTestId('button')
 
-        expect(button.classList).toContain('button-primary')
+        expect(button).toHaveClass('button-primary')
     })
 })
 

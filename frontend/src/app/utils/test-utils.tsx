@@ -1,5 +1,5 @@
 import { render, RenderOptions } from '@testing-library/react'
-import { JSXElementConstructor, ReactNode } from 'react'
+import React, { JSXElementConstructor, ReactNode } from 'react'
 
 // const AllTheProviders = ({ children }) => {
 //     return (
@@ -13,7 +13,13 @@ import { JSXElementConstructor, ReactNode } from 'react'
 
 const customRender = (
     ui: ReactNode,
-    providers?: JSXElementConstructor<{ children: React.ReactNode }>,
+    providers?: JSXElementConstructor<{
+        children:
+            | React.ReactNode
+            | React.ReactNode[]
+            | React.ReactElement
+            | React.ReactElement[]
+    }>,
     options?: Omit<RenderOptions, 'wrapper'>,
 ) => render(ui, { wrapper: providers, ...options })
 
