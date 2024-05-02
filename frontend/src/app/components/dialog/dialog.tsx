@@ -1,7 +1,7 @@
 import { DialogProps } from '@/app/models/dialog-models'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react'
 
-export default function Dialog({ open, onClose, children }: DialogProps) {
+function Dialog({ open, onClose, children }: DialogProps) {
     const dialogRef = useRef<HTMLDialogElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
@@ -57,3 +57,4 @@ export default function Dialog({ open, onClose, children }: DialogProps) {
         </dialog>
     )
 }
+export default memo(Dialog)

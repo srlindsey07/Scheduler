@@ -50,7 +50,6 @@ export default function Schedule() {
             />
 
             <Calendar
-                // appointments={appointments}
                 providers={providers}
                 workHoursStart={moment().set({ hour: 8, minute: 0 })}
                 workHoursEnd={moment().set({ hour: 17, minute: 0 })}

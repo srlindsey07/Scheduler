@@ -1,4 +1,5 @@
 import { RegisterOptions } from 'react-hook-form'
+
 export class Name {
     first: string
     last: string

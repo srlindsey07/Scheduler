@@ -23,7 +23,8 @@
             "@/context/*": ["./src/app/context/*"],
             "@/services/*": ["./src/app/services/*"],
             "@/models/*": ["./src/app/models/*"],
-            "@/utils/*": ["./src/app/utils/*"]
+            "@/utils/*": ["./src/app/utils/*"],
+            "test-utils": ["./src/app/utils/test-utils.tsx"]
         }
     },
     "include": [
@@ -31,7 +32,8 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts",
-        "src/app/components/navigation"
+        "src/app/components/navigation",
+        "babel.config.js"
     ],
     "exclude": ["node_modules"]
 }

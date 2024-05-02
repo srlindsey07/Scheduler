@@ -9,12 +9,12 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment, { Moment } from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import Button from '../buttons/button'
 import ButtonGroup from '../buttons/button-group'
 import CalendarDayView from './day-view/calendar-day-view'
 
-export default function Calendar({
+function Calendar({
     providers,
     defaultDate = moment(),
     workHoursStart = moment().startOf('day'),
@@ -128,3 +128,4 @@ export default function Calendar({
         </div>
     )
 }
+export default memo(Calendar)
